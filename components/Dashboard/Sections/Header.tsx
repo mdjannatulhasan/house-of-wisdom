@@ -17,7 +17,7 @@ const Header = (props: Props) => {
             <div className="flex items-center gap-4 w-full">
                 <a href="index.html" className="md:hidden flex">
                     <img
-                        src="assets/images/logo-sm.png"
+                        src="/assets/images/logo-sm.png"
                         className="h-6"
                         alt="Small logo"
                     />
@@ -55,7 +55,7 @@ const Header = (props: Props) => {
                         className="hs-dropdown-toggle inline-flex items-center"
                     >
                         <img
-                            src="assets/images/flags/us.jpg"
+                            src="/assets/images/flags/us.jpg"
                             alt="user-image"
                             className="h-4 w-6"
                         />
@@ -67,7 +67,7 @@ const Header = (props: Props) => {
                             className="flex items-center gap-2.5 py-2 px-3 rounded-md text-sm text-default-800 hover:bg-gray-100"
                         >
                             <img
-                                src="assets/images/flags/germany.jpg"
+                                src="/assets/images/flags/germany.jpg"
                                 alt="user-image"
                                 className="h-4"
                             />
@@ -79,7 +79,7 @@ const Header = (props: Props) => {
                             className="flex items-center gap-2.5 py-2 px-3 rounded-md text-sm text-default-800 hover:bg-gray-100"
                         >
                             <img
-                                src="assets/images/flags/italy.jpg"
+                                src="/assets/images/flags/italy.jpg"
                                 alt="user-image"
                                 className="h-4"
                             />
@@ -91,7 +91,7 @@ const Header = (props: Props) => {
                             className="flex items-center gap-2.5 py-2 px-3 rounded-md text-sm text-default-800 hover:bg-gray-100"
                         >
                             <img
-                                src="assets/images/flags/spain.jpg"
+                                src="/assets/images/flags/spain.jpg"
                                 alt="user-image"
                                 className="h-4"
                             />
@@ -103,7 +103,7 @@ const Header = (props: Props) => {
                             className="flex items-center gap-2.5 py-2 px-3 rounded-md text-sm text-default-800 hover:bg-gray-100"
                         >
                             <img
-                                src="assets/images/flags/russia.jpg"
+                                src="/assets/images/flags/russia.jpg"
                                 alt="user-image"
                                 className="h-4"
                             />
