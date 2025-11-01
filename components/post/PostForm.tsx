@@ -7,13 +7,9 @@ import SubTitle from '../common/SubTitle';
 import BtnPrimary from '../common/BtnPrimary';
 import { useAppDispatch, useAppSelector } from '@/redux/hook';
 import { useEffect } from 'react';
-import { fetchBooks } from '@/redux/features/book/bookSlice';
 import CustomEditor from '../CustomEditor';
 import { toast } from '../ui/use-toast';
-import {
-    categoriesList,
-    fetchCategories,
-} from '@/redux/features/category/categorySlice';
+import { categoriesList } from '@/redux/features/category/categorySlice';
 import SelectCustom from '../common/SelectCustom';
 import { ICategory } from '@/types/globalTypes';
 
@@ -30,9 +26,7 @@ function PostForm({}: Props) {
         category_id: null,
     } as any);
 
-    useEffect(() => {
-        dispatch(fetchCategories());
-    }, []);
+    // categories should be provided; no fetch here to avoid build deps
 
     const handleEditorChange = (content: string) => {
         setData('content', content);
@@ -48,7 +42,7 @@ function PostForm({}: Props) {
                     title: 'Post added successfully.',
                     description: '',
                 });
-                dispatch(fetchCategories());
+                
                 reset();
             },
             onError: () => {

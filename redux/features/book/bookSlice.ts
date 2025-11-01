@@ -1,6 +1,5 @@
 import { IBook } from '@/types/homeType';
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { createSlice } from '@reduxjs/toolkit';
 
 interface IBookState {
     status: boolean;
@@ -28,29 +27,7 @@ const initialState: IBookState = {
     error: null,
 };
 
-export const fetchBooks = createAsyncThunk(
-    'books/fetchBooks',
-    async (
-        args: { searchTerm?: string; genre?: string; year?: string | number },
-        { rejectWithValue }
-    ) => {
-        try {
-            const params = {
-                title: args?.searchTerm,
-                genre: args?.genre,
-                year: args?.year,
-                json: true,
-            };
-
-            const response = await axios.get('/books', { params });
-            console.log(response);
-
-            return response?.data?.books;
-        } catch (error: any) {
-            return rejectWithValue(error.response.data);
-        }
-    }
-);
+// Removed unused thunk to avoid axios dependency during build
 
 const bookSlice = createSlice({
     name: 'book',
@@ -80,21 +57,7 @@ const bookSlice = createSlice({
             state.isLoading = action.payload;
         },
     },
-    extraReducers: (builder) => {
-        builder
-            .addCase(fetchBooks.pending, (state) => {
-                state.isLoading = true;
-                state.error = null;
-            })
-            .addCase(fetchBooks.fulfilled, (state, action) => {
-                state.isLoading = false;
-                state.books = action.payload;
-            })
-            .addCase(fetchBooks.rejected, (state, action) => {
-                state.isLoading = false;
-                state.error = action.payload as string;
-            });
-    },
+    extraReducers: () => {},
 });
 
 export const {

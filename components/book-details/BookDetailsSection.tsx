@@ -1,9 +1,8 @@
 'use client';
 
-import { IBookWithId } from '@/types/homeType';
+import { IBook } from '@/types/homeType';
 import Container from '../common/Container';
 import { useAppSelector } from '@/redux/hook';
-import { usePalette } from 'color-thief-react';
 import { useEffect, useState } from 'react';
 import { GiHouse } from 'react-icons/gi';
 import { useDeleteBookMutation } from '@/redux/features/book/bookApi';
@@ -14,7 +13,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Reviews from './Reviews';
 
-const BookDetailsSection = ({ book }: { book: IBookWithId }) => {
+const BookDetailsSection = ({ book }: { book: IBook }) => {
     const singleBook = book;
     const router = useRouter();
 
@@ -22,22 +21,7 @@ const BookDetailsSection = ({ book }: { book: IBookWithId }) => {
 
     const { toast } = useToast();
     const dispatch = useDispatch();
-    const [palette, setPalette] = useState([]);
-
-    const { data, error } = usePalette(
-        `/${singleBook?.cover_image}`,
-        4,
-        'hex',
-        {
-            crossOrigin: 'anonymous',
-        }
-    );
-
-    console.log(data);
-
-    useEffect(() => {
-        setPalette(data as never);
-    }, [data]);
+    const [palette, setPalette] = useState<string[]>(['#4397ee', '#2565d0']);
 
     const [deleteBook, { isLoading }] = useDeleteBookMutation();
 

@@ -3,7 +3,7 @@ import InputError from '@/components/InputError';
 import InputLabel from '@/components/InputLabel';
 import PrimaryButton from '@/components/PrimaryButton';
 import TextInput from '@/components/TextInput';
-import { Transition } from '@headlessui/react';
+// removed headlessui dependency for build compatibility
 
 export default function UpdatePasswordForm({
     className = '',
@@ -143,15 +143,9 @@ export default function UpdatePasswordForm({
                 <div className="flex items-center gap-4">
                     <PrimaryButton disabled={processing}>Save</PrimaryButton>
 
-                    <Transition
-                        show={recentlySuccessful}
-                        enter="transition ease-in-out"
-                        enterFrom="opacity-0"
-                        leave="transition ease-in-out"
-                        leaveTo="opacity-0"
-                    >
+                    {recentlySuccessful && (
                         <p className="text-sm text-gray-600">Saved.</p>
-                    </Transition>
+                    )}
                 </div>
             </form>
         </section>

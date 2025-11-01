@@ -3,7 +3,6 @@ import InputLabel from '@/components/InputLabel';
 import PrimaryButton from '@/components/PrimaryButton';
 import TextInput from '@/components/TextInput';
 import Link from 'next/link';
-import { Transition } from '@headlessui/react';
 import { FormEventHandler, useState } from 'react';
 import { useSession } from 'next-auth/react';
 
@@ -124,16 +123,9 @@ export default function UpdateProfileInformation({
 
                 <div className="flex items-center gap-4">
                     <PrimaryButton disabled={processing}>Save</PrimaryButton>
-
-                    <Transition
-                        show={recentlySuccessful}
-                        enter="transition ease-in-out"
-                        enterFrom="opacity-0"
-                        leave="transition ease-in-out"
-                        leaveTo="opacity-0"
-                    >
+                    {recentlySuccessful && (
                         <p className="text-sm text-gray-600">Saved.</p>
-                    </Transition>
+                    )}
                 </div>
             </form>
         </section>

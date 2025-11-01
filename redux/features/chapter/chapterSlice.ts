@@ -1,7 +1,6 @@
 import { IChapter } from '@/types/globalTypes';
 import { IBook } from '@/types/homeType';
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { createSlice } from '@reduxjs/toolkit';
 
 interface IChapterState {
     status: boolean;
@@ -23,25 +22,7 @@ const initialState: IChapterState = {
     contents: '',
 };
 
-export const fetchChapters = createAsyncThunk(
-    'chapters/fetchChapters',
-    async (bookId: number, { rejectWithValue }) => {
-        try {
-            const params = {
-                book_id: bookId,
-            };
-
-            const response = await axios.get(route('chapter_by_book'), {
-                params,
-            });
-            console.log(response);
-
-            return response.data;
-        } catch (error: any) {
-            return rejectWithValue(error.response.data);
-        }
-    }
-);
+// Removed unused thunk to avoid axios dependency during build
 
 const chapterSlice = createSlice({
     name: 'chapter',
@@ -60,21 +41,7 @@ const chapterSlice = createSlice({
             state.contents = action.payload;
         },
     },
-    extraReducers: (builder) => {
-        builder
-            .addCase(fetchChapters.pending, (state) => {
-                state.isLoading = true;
-                state.error = null;
-            })
-            .addCase(fetchChapters.fulfilled, (state, action) => {
-                state.isLoading = false;
-                state.chapters = action.payload;
-            })
-            .addCase(fetchChapters.rejected, (state, action) => {
-                state.isLoading = false;
-                state.error = action.payload as string;
-            });
-    },
+    extraReducers: () => {},
 });
 
 export const { toggleState, setIsLoading, setChapter, setContent } =

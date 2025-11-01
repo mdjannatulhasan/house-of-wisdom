@@ -19,14 +19,13 @@ async function getBook(id: string) {
     }
 
     return {
-      id: book.id,
+      id: String(book.id),
       title: book.title,
       cover_image: book.coverImage ? `/${book.coverImage}` : '#',
       author: book.author,
       genre: book.category?.title || '',
       publication_date: book.publicationDate.toLocaleDateString(),
-      status: book.status,
-      description: book.description || '',
+      // status/description not present on Book model in Prisma; omit to satisfy types
     };
   } catch (error) {
     console.error('Error fetching book:', error);

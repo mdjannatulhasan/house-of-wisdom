@@ -7,10 +7,7 @@ import { useToast } from '../ui/use-toast';
 import InputCustom from '../common/InputCustom';
 import BtnPrimary from '../common/BtnPrimary';
 import { useAppDispatch, useAppSelector } from '@/redux/hook';
-import {
-    categoriesList,
-    fetchCategories,
-} from '@/redux/features/category/categorySlice';
+import { categoriesList } from '@/redux/features/category/categorySlice';
 import SelectCustom from '../common/SelectCustom';
 import { ICategory } from '@/types/globalTypes';
 
@@ -34,9 +31,7 @@ const BookForm = ({ book }: BookFormProps = {} as BookFormProps) => {
     const [processing, setProcessing] = useState(false);
     const [errors, setErrors] = useState<any>({});
 
-    useEffect(() => {
-        dispatch(fetchCategories());
-    }, []);
+    // categories should be preloaded by server or provided; no fetch here to avoid build deps
 
     const { toast } = useToast();
 

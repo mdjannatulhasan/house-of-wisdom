@@ -1,7 +1,6 @@
 import { RootState } from '@/redux/store';
 import { ICategory } from '@/types/globalTypes';
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { createSlice } from '@reduxjs/toolkit';
 
 interface ICategoryState {
     status: boolean;
@@ -21,18 +20,7 @@ const initialState: ICategoryState = {
     category: {} as ICategory,
 };
 
-export const fetchCategories = createAsyncThunk(
-    'categories/fetchCategories',
-    async (_, { rejectWithValue }) => {
-        try {
-            const response = await axios.get(route('category_list'));
-
-            return response.data;
-        } catch (error: any) {
-            return rejectWithValue(error.response.data);
-        }
-    }
-);
+// Removed unused thunk to avoid axios dependency during build
 
 const categorySlice = createSlice({
     name: 'category',
@@ -48,21 +36,7 @@ const categorySlice = createSlice({
             state.category = action.payload;
         },
     },
-    extraReducers: (builder) => {
-        builder
-            .addCase(fetchCategories.pending, (state) => {
-                state.isLoading = true;
-                state.error = null;
-            })
-            .addCase(fetchCategories.fulfilled, (state, action) => {
-                state.isLoading = false;
-                state.categories = action.payload?.categories;
-            })
-            .addCase(fetchCategories.rejected, (state, action) => {
-                state.isLoading = false;
-                state.error = action.payload as string;
-            });
-    },
+    extraReducers: () => {},
 });
 
 export const { toggleState, setIsLoading, setCategory } = categorySlice.actions;
