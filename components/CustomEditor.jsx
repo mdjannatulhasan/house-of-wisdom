@@ -68,7 +68,8 @@ import {
     Underline,
     Undo,
 } from 'ckeditor5';
-import 'ckeditor5/ckeditor5.css';
+import '@ckeditor/ckeditor5-theme-lark/dist/index.css';
+import '@ckeditor/ckeditor5-ui/dist/index.css';
 
 const CustomEditor = ({ handleEditorChange, initialContent = '' }) => {
     const editorContainerRef = useRef(null);
