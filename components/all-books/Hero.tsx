@@ -1,20 +1,10 @@
-'use client';
-
-import { FormEvent, useState } from 'react';
+import { FormEvent } from 'react';
 import BtnPrimary from '../common/BtnPrimary';
-import { useRouter } from 'next/navigation';
+import { useForm, usePage } from '@inertiajs/react';
 
-interface HeroProps {
-  filters?: {
-    searchTerm?: string;
-    genre?: string;
-    year?: string;
-  };
-}
-
-const Hero = ({ filters = {} }: HeroProps) => {
-    const router = useRouter();
-    const [data, setData] = useState({
+const Hero = () => {
+    const { filters }: any = usePage().props;
+    const { data, setData, get } = useForm({
         searchTerm: filters.searchTerm || '',
         genre: filters.genre || '',
         year: filters.year || '',
@@ -22,12 +12,7 @@ const Hero = ({ filters = {} }: HeroProps) => {
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const params = new URLSearchParams();
-        if (data.searchTerm) params.set('searchTerm', data.searchTerm);
-        if (data.genre) params.set('genre', data.genre);
-        if (data.year) params.set('year', data.year);
-        
-        router.push(`/books?${params.toString()}`);
+        get('/books'); // Sends a GET request with form data as query parameters
     };
 
     return (
@@ -54,7 +39,7 @@ const Hero = ({ filters = {} }: HeroProps) => {
                                 className="border border-blue-600 px-3 py-2 w-full max-w-[450px] rounded-md"
                                 value={data.searchTerm}
                                 onChange={(e) =>
-                                    setData({...data, searchTerm: e.target.value})
+                                    setData('searchTerm', e.target.value)
                                 }
                             />
                             <input
@@ -64,7 +49,7 @@ const Hero = ({ filters = {} }: HeroProps) => {
                                 className="border border-blue-600 pl-3 pr-1 py-2 w-full max-w-[150px] rounded-md"
                                 value={data.year}
                                 onChange={(e) =>
-                                    setData({...data, year: e.target.value})
+                                    setData('year', e.target.value)
                                 }
                             />
                             <input
@@ -74,7 +59,7 @@ const Hero = ({ filters = {} }: HeroProps) => {
                                 className="border border-blue-600 px-3 py-2 w-full max-w-[150px] rounded-md"
                                 value={data.genre}
                                 onChange={(e) =>
-                                    setData({...data, genre: e.target.value})
+                                    setData('genre', e.target.value)
                                 }
                             />
                         </div>

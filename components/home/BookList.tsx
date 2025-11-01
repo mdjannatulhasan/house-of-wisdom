@@ -1,17 +1,15 @@
-'use client';
-
+import { IBookWithId } from '@/types/homeType';
 import Container from '../common/Container';
 import SecTitle from '../common/SecTitle';
 import SubTitle from '../common/SubTitle';
 import BtnPrimary from '../common/BtnPrimary';
 import Book from '../all-books/Book';
+import { usePage } from '@inertiajs/react';
 
-interface BookListProps {
-    books: any[];
-}
+const BookList = () => {
+    const books = usePage()?.props.books as any;
 
-const BookList = ({ books }: BookListProps) => {
-    const bookItems = books?.map(
+    let bookItems = books?.map(
         ({
             id,
             title,
@@ -19,7 +17,7 @@ const BookList = ({ books }: BookListProps) => {
             genre,
             publication_date,
             author,
-        }) => (
+        }: IBookWithId) => (
             <Book
                 key={id}
                 code={id}
@@ -31,6 +29,8 @@ const BookList = ({ books }: BookListProps) => {
             />
         )
     );
+
+    console.log(books);
 
     return (
         <section className="py-12">

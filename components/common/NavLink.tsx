@@ -1,9 +1,9 @@
-import Link from 'next/link';
 import { ReactNode } from 'react';
+import { Link } from '@inertiajs/react';
 
-const NavLink = ({ href, children }: { href: string; children: ReactNode }) => {
+const NavLink = ({ children, href }: { children: ReactNode; href: string }) => {
     return (
-        <Link href={href} className="nav-link flex items-center gap-2">
+        <Link href={href} className="flex items-center gap-3 nav-link">
             {children}
         </Link>
     );

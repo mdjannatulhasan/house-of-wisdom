@@ -1,20 +1,8 @@
-'use client';
-
 import { useWishlist } from '@/lib/hooks/useWishlist';
 import { useAppSelector } from '@/redux/hook';
+import { IBook } from '@/types/homeType';
 import { GiHearts } from 'react-icons/gi';
-import Link from 'next/link';
-import Image from 'next/image';
-
-interface IBook {
-    title: string;
-    cover_image?: string;
-    genre?: string;
-    publication_date?: string | Date;
-    author?: string;
-    code?: string | number;
-    status?: string;
-}
+import { Link } from '@inertiajs/react';
 
 const Book = ({
     title,
@@ -26,6 +14,7 @@ const Book = ({
     status,
 }: IBook) => {
     const { handleWishlist, heart, setHeart } = useWishlist(code);
+
     const { role } = useAppSelector((state) => state.user);
 
     return (
@@ -60,6 +49,7 @@ const Book = ({
                         {title}
                     </h3>
                 </Link>
+                {/* <p className="text-blue-600 font-medium">${price}</p> */}
                 <p className="font-medium">
                     {new Date(publication_date as string).toLocaleString()}
                 </p>

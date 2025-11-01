@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import Link from 'next/link';
+import { Link } from '@inertiajs/react';
 
 export type IButtonType = {
     children: ReactNode;
