@@ -1,138 +1,181 @@
 'use client';
 
 import Link from 'next/link';
-import { useSession, signOut } from 'next-auth/react';
+import { LucideAlignRight } from 'lucide-react';
+import { GiBookCover, GiHearts, GiHouse, GiNotebook } from 'react-icons/gi';
+import { BiLogIn, BiSolidUserPlus } from 'react-icons/bi';
+import { useAppDispatch, useAppSelector } from '@/redux/hook';
+import { handleLogout } from '@/redux/features/user/userSlice';
 import { Button } from '@/components/ui/button';
-import { useState } from 'react';
+import {
+    Sheet,
+    SheetClose,
+    SheetContent,
+    SheetDescription,
+    SheetHeader,
+    SheetTitle,
+    SheetTrigger,
+} from '@/components/ui/sheet';
+import NavLink from '@/components/common/NavLink';
+import TopbarLogo from '@/assets/TopbarLogo';
+import { signOut, useSession } from 'next-auth/react';
 
-export default function Navbar() {
-  const { data: session } = useSession();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+const Navbar = () => {
+    const { data: session } = useSession();
+    const { email } = useAppSelector((state) => state.user);
+    const dispatch = useAppDispatch();
 
-  return (
-    <nav className="bg-white shadow">
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <Link href="/" className="text-xl font-bold text-blue-600">
-            Book Library
-          </Link>
+    return (
+        <nav className="w-full h-16 backdrop-blur-lg z-10 py-2">
+            <div className="container bg-white/60">
+                <div className="flex items-center justify-between w-full h-full mx-auto ">
+                    <div>
+                        <Link href="/">
+                            <TopbarLogo />
+                        </Link>
+                    </div>
+                    <div className="min-w-[200px]">
+                        <ul className="flex justify-end">
+                            {session?.user ? (
+                                <li>
+                                    <Button
+                                        className="text-md"
+                                        variant="link"
+                                        onClick={() => {
+                                            dispatch(handleLogout());
+                                            signOut({ callbackUrl: '/' });
+                                        }}
+                                    >
+                                        Log out
+                                    </Button>
+                                </li>
+                            ) : (
+                                <li>
+                                    <Button
+                                        className="text-md"
+                                        variant="link"
+                                        asChild
+                                    >
+                                        <Link href="/login">
+                                            Sign In
+                                        </Link>
+                                    </Button>
+                                </li>
+                            )}
+                            <li>
+                                <Sheet>
+                                    <SheetTrigger asChild>
+                                        <Button variant={'ghost'}>
+                                            <LucideAlignRight />
+                                        </Button>
+                                    </SheetTrigger>
+                                    <SheetContent className="bg-red-500">
+                                        <SheetHeader>
+                                            <SheetTitle className="lg:text-2xl text-xl">
+                                                Bookish Pathways
+                                            </SheetTitle>
+                                            <SheetDescription className="lg:text-lg text-md">
+                                                Unleash Your Imagination,
+                                                Explore Boundless Stories with
+                                                us. Here are our main pages for
+                                                you:
+                                            </SheetDescription>
+                                        </SheetHeader>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-4">
-            <Link
-              href="/books"
-              className="text-gray-700 hover:text-blue-600 px-3 py-2"
-            >
-              All Books
-            </Link>
-            <Link
-              href="/posts"
-              className="text-gray-700 hover:text-blue-600 px-3 py-2"
-            >
-              Posts
-            </Link>
-            {session ? (
-              <>
-                <Link
-                  href="/dashboard"
-                  className="text-gray-700 hover:text-blue-600 px-3 py-2"
-                >
-                  Dashboard
-                </Link>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => signOut({ callbackUrl: '/' })}
-                >
-                  Logout
-                </Button>
-              </>
-            ) : (
-              <>
-                <Link href="/login">
-                  <Button variant="outline" size="sm">
-                    Sign In
-                  </Button>
-                </Link>
-                <Link href="/register">
-                  <Button size="sm">Sign Up</Button>
-                </Link>
-              </>
-            )}
-          </div>
+                                        <div className="mt-7 lg:text-xl text-lg font-semibold">
+                                            <ul className="flex flex-col gap-4">
+                                                <li>
+                                                    <NavLink href="/">
+                                                        <GiHouse />
+                                                        <SheetClose asChild>
+                                                            <span>Home</span>
+                                                        </SheetClose>
+                                                    </NavLink>
+                                                </li>
+                                                <li>
+                                                    <NavLink href="/books">
+                                                        <GiBookCover />
+                                                        <SheetClose asChild>
+                                                            <span>
+                                                                All Books
+                                                            </span>
+                                                        </SheetClose>
+                                                    </NavLink>
+                                                </li>
+                                                <li>
+                                                    <NavLink href="/my-books">
+                                                        <GiBookCover />
+                                                        <SheetClose asChild>
+                                                            <span>
+                                                                My Books
+                                                            </span>
+                                                        </SheetClose>
+                                                    </NavLink>
+                                                </li>
+                                                <li className="">
+                                                    <NavLink href="/dashboard/books/create">
+                                                        <GiNotebook />
+                                                        <SheetClose asChild>
+                                                            <span>
+                                                                Add A Book
+                                                            </span>
+                                                        </SheetClose>
+                                                    </NavLink>
+                                                </li>
+                                                <li className="">
+                                                    <NavLink href="/dashboard/chapters/create">
+                                                        <GiNotebook />
+                                                        <SheetClose asChild>
+                                                            <span>
+                                                                Add Chapter
+                                                                Content
+                                                            </span>
+                                                        </SheetClose>
+                                                    </NavLink>
+                                                </li>
+                                                <li className="">
+                                                    <NavLink href="/posts">
+                                                        <GiHearts />
+                                                        <SheetClose asChild>
+                                                            <span>Posts</span>
+                                                        </SheetClose>
+                                                    </NavLink>
+                                                </li>
+                                                {!email && (
+                                                    <>
+                                                        <li className="border-t pt-4 border-t-[#cccccc]">
+                                                            <NavLink href="/login">
+                                                                <BiLogIn />
+                                                                <SheetClose
+                                                                    asChild
+                                                                >
+                                                                    <span>
+                                                                        Sign in
+                                                                    </span>
+                                                                </SheetClose>
+                                                            </NavLink>
+                                                        </li>
+                                                        <li>
+                                                            <NavLink href="/register">
+                                                                <BiSolidUserPlus />
+                                                                <span>
+                                                                    Sign up
+                                                                </span>
+                                                            </NavLink>
+                                                        </li>
+                                                    </>
+                                                )}
+                                            </ul>
+                                        </div>
+                                    </SheetContent>
+                                </Sheet>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    );
+};
 
-          {/* Mobile menu button */}
-          <button
-            className="md:hidden"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          >
-            <svg
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 6h16M4 12h16M4 18h16"
-              />
-            </svg>
-          </button>
-        </div>
-
-        {/* Mobile menu */}
-        {mobileMenuOpen && (
-          <div className="md:hidden py-4 space-y-2">
-            <Link
-              href="/books"
-              className="block text-gray-700 hover:text-blue-600 px-3 py-2"
-            >
-              All Books
-            </Link>
-            <Link
-              href="/posts"
-              className="block text-gray-700 hover:text-blue-600 px-3 py-2"
-            >
-              Posts
-            </Link>
-            {session ? (
-              <>
-                <Link
-                  href="/dashboard"
-                  className="block text-gray-700 hover:text-blue-600 px-3 py-2"
-                >
-                  Dashboard
-                </Link>
-                <button
-                  onClick={() => signOut({ callbackUrl: '/' })}
-                  className="block w-full text-left text-gray-700 hover:text-blue-600 px-3 py-2"
-                >
-                  Logout
-                </button>
-              </>
-            ) : (
-              <>
-                <Link
-                  href="/login"
-                  className="block text-gray-700 hover:text-blue-600 px-3 py-2"
-                >
-                  Sign In
-                </Link>
-                <Link
-                  href="/register"
-                  className="block text-gray-700 hover:text-blue-600 px-3 py-2"
-                >
-                  Sign Up
-                </Link>
-              </>
-            )}
-          </div>
-        )}
-      </div>
-    </nav>
-  );
-}
-
+export default Navbar;

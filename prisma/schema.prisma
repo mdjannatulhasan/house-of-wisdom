@@ -2,154 +2,154 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+    provider = "prisma-client-js"
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+    provider  = "postgresql"
+    url       = env("DATABASE_URL")
+    directUrl = env("DIRECT_URL")
 }
 
 model User {
-  id                Int       @id @default(autoincrement())
-  name              String
-  email             String    @unique
-  emailVerifiedAt   DateTime? @map("email_verified_at")
-  password          String
-  role              String    @default("user") // admin, editor, user
-  rememberToken     String?   @map("remember_token")
-  createdAt         DateTime  @default(now()) @map("created_at")
-  updatedAt         DateTime  @updatedAt @map("updated_at")
-  
-  posts             Post[]
-  comments          Comment[]
-  sessions          Session[]
-  
-  @@map("users")
+    id              Int       @id @default(autoincrement())
+    name            String
+    email           String    @unique
+    emailVerifiedAt DateTime? @map("email_verified_at")
+    password        String
+    role            String    @default("user") // admin, editor, user
+    rememberToken   String?   @map("remember_token")
+    createdAt       DateTime  @default(now()) @map("created_at")
+    updatedAt       DateTime  @updatedAt @map("updated_at")
+
+    posts    Post[]
+    comments Comment[]
+    sessions Session[]
+
+    @@map("users")
 }
 
 model PasswordResetToken {
-  email     String   @id
-  token     String
-  createdAt DateTime @default(now()) @map("created_at")
-  
-  @@map("password_reset_tokens")
+    email     String   @id
+    token     String
+    createdAt DateTime @default(now()) @map("created_at")
+
+    @@map("password_reset_tokens")
 }
 
 model Session {
-  id           String   @id
-  userId       Int?     @map("user_id")
-  ipAddress    String?  @map("ip_address")
-  userAgent    String?  @map("user_agent")
-  payload      String
-  lastActivity Int      @map("last_activity")
-  
-  user         User?    @relation(fields: [userId], references: [id])
-  
-  @@index([userId])
-  @@index([lastActivity])
-  @@map("sessions")
+    id           String  @id
+    userId       Int?    @map("user_id")
+    ipAddress    String? @map("ip_address")
+    userAgent    String? @map("user_agent")
+    payload      String
+    lastActivity Int     @map("last_activity")
+
+    user User? @relation(fields: [userId], references: [id])
+
+    @@index([userId])
+    @@index([lastActivity])
+    @@map("sessions")
 }
 
 model Category {
-  id          Int        @id @default(autoincrement())
-  title       String
-  slug        String
-  menuOrder   Int        @default(10) @map("menu_order")
-  type        String     @default("parent") // parent or child
-  parentId    Int?       @map("parent_id")
-  createdAt   DateTime   @default(now()) @map("created_at")
-  updatedAt   DateTime   @updatedAt @map("updated_at")
-  deletedAt   DateTime?  @map("deleted_at")
-  
-  parent      Category?  @relation("CategoryHierarchy", fields: [parentId], references: [id])
-  children    Category[] @relation("CategoryHierarchy")
-  books       Book[]
-  posts       Post[]
-  
-  @@map("categories")
+    id        Int       @id @default(autoincrement())
+    title     String
+    slug      String
+    menuOrder Int       @default(10) @map("menu_order")
+    type      String    @default("parent") // parent or child
+    parentId  Int?      @map("parent_id")
+    createdAt DateTime  @default(now()) @map("created_at")
+    updatedAt DateTime  @updatedAt @map("updated_at")
+    deletedAt DateTime? @map("deleted_at")
+
+    parent   Category?  @relation("CategoryHierarchy", fields: [parentId], references: [id])
+    children Category[] @relation("CategoryHierarchy")
+    books    Book[]
+    posts    Post[]
+
+    @@map("categories")
 }
 
 model Book {
-  id              Int       @id @default(autoincrement())
-  title           String
-  categoryId      Int?      @map("category_id")
-  coverImage      String?   @map("cover_image")
-  author          String
-  type            String    @default("text") // text or pdf
-  pdfFile         String?   @map("pdf_file")
-  publicationDate DateTime  @map("publication_date")
-  price           Float?
-  createdAt       DateTime  @default(now()) @map("created_at")
-  updatedAt       DateTime  @updatedAt @map("updated_at")
-  
-  category        Category? @relation(fields: [categoryId], references: [id])
-  chapters        Chapter[]
-  
-  @@map("books")
+    id              Int      @id @default(autoincrement())
+    title           String
+    categoryId      Int?     @map("category_id")
+    coverImage      String?  @map("cover_image")
+    author          String
+    type            String   @default("text") // text or pdf
+    pdfFile         String?  @map("pdf_file")
+    publicationDate DateTime @map("publication_date")
+    price           Float?
+    createdAt       DateTime @default(now()) @map("created_at")
+    updatedAt       DateTime @updatedAt @map("updated_at")
+
+    category Category? @relation(fields: [categoryId], references: [id])
+    chapters Chapter[]
+
+    @@map("books")
 }
 
 model Chapter {
-  id           Int            @id @default(autoincrement())
-  bookId       Int            @map("book_id")
-  title        String
-  content      String?
-  order        Int            @default(1)
-  createdAt    DateTime       @default(now()) @map("created_at")
-  updatedAt    DateTime       @updatedAt @map("updated_at")
-  
-  book         Book           @relation(fields: [bookId], references: [id], onDelete: Cascade)
-  bookContents BookContent[]
-  
-  @@map("chapters")
+    id        Int      @id @default(autoincrement())
+    bookId    Int      @map("book_id")
+    title     String
+    content   String?
+    order     Int      @default(1)
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
+
+    book         Book          @relation(fields: [bookId], references: [id], onDelete: Cascade)
+    bookContents BookContent[]
+
+    @@map("chapters")
 }
 
 model BookContent {
-  id        Int      @id @default(autoincrement())
-  chapterId Int      @map("chapter_id")
-  content   String?
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-  
-  chapter   Chapter  @relation(fields: [chapterId], references: [id], onDelete: Cascade)
-  
-  @@map("book_contents")
+    id        Int      @id @default(autoincrement())
+    chapterId Int      @map("chapter_id")
+    content   String?
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
+
+    chapter Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+
+    @@map("book_contents")
 }
 
 model Post {
-  id         Int       @id @default(autoincrement())
-  userId     Int       @map("user_id")
-  categoryId Int       @map("category_id")
-  title      String
-  slug       String
-  body       String
-  status     String    @default("draft") // draft, published, pending
-  createdAt  DateTime  @default(now()) @map("created_at")
-  updatedAt  DateTime  @updatedAt @map("updated_at")
-  deletedAt  DateTime? @map("deleted_at")
-  
-  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  category   Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  comments   Comment[]
-  
-  @@map("posts")
+    id         Int       @id @default(autoincrement())
+    userId     Int       @map("user_id")
+    categoryId Int       @map("category_id")
+    title      String
+    slug       String
+    body       String
+    status     String    @default("draft") // draft, published, pending
+    createdAt  DateTime  @default(now()) @map("created_at")
+    updatedAt  DateTime  @updatedAt @map("updated_at")
+    deletedAt  DateTime? @map("deleted_at")
+
+    user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+    category Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+    comments Comment[]
+
+    @@map("posts")
 }
 
 model Comment {
-  id        Int       @id @default(autoincrement())
-  userId    Int       @map("user_id")
-  postId    Int       @map("post_id")
-  parentId  Int?      @map("parent_id")
-  content   String
-  createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime  @updatedAt @map("updated_at")
-  deletedAt DateTime? @map("deleted_at")
-  
-  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  post      Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
-  parent    Comment?  @relation("CommentHierarchy", fields: [parentId], references: [id], onDelete: Cascade)
-  replies   Comment[] @relation("CommentHierarchy")
-  
-  @@map("comments")
+    id        Int       @id @default(autoincrement())
+    userId    Int       @map("user_id")
+    postId    Int       @map("post_id")
+    parentId  Int?      @map("parent_id")
+    content   String
+    createdAt DateTime  @default(now()) @map("created_at")
+    updatedAt DateTime  @updatedAt @map("updated_at")
+    deletedAt DateTime? @map("deleted_at")
+
+    user    User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+    post    Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
+    parent  Comment?  @relation("CommentHierarchy", fields: [parentId], references: [id], onDelete: Cascade)
+    replies Comment[] @relation("CommentHierarchy")
+
+    @@map("comments")
 }
