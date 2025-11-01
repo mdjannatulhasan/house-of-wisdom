@@ -76,9 +76,8 @@ const CustomEditor = ({ handleEditorChange, initialContent = '' }) => {
     const [isLayoutReady, setIsLayoutReady] = useState(false);
 
     useEffect(() => {
-        setIsLayoutReady(true);
-
-        return () => setIsLayoutReady(false);
+        const id = requestAnimationFrame(() => setIsLayoutReady(true));
+        return () => cancelAnimationFrame(id);
     }, []);
 
     const editorConfig = {
