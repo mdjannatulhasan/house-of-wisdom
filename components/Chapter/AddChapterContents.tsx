@@ -8,7 +8,8 @@ import { useAppDispatch, useAppSelector } from '@/redux/hook';
 import { useEffect, useState } from 'react';
 import { toast } from '../ui/use-toast';
 import { IChapter } from '@/types/globalTypes';
-import CustomEditor from '../CustomEditor';
+import dynamic from 'next/dynamic';
+const CustomEditor = dynamic(() => import('../CustomEditor'), { ssr: false });
 
 type Props = {};
 

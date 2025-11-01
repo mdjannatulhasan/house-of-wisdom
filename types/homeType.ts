@@ -1,11 +1,11 @@
 import { IChapter } from './globalTypes';
 
 export type IBook = {
-    id?: number | null | undefined;
+    id?: string | number | null | undefined;
     code?: string;
     title: string;
     cover_image: string;
-    pdf_file?: string;
+    pdf_file?: string | null;
     genre: string;
     author?: string;
     publication_date?: string;
@@ -15,5 +15,5 @@ export type IBook = {
     chapters?: IChapter[];
 };
 export type IBookWithId = IBook & {
-    id: string;
+    id: string | number;
 };

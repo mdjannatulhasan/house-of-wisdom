@@ -2,7 +2,6 @@
 
 import { useState, createContext, useContext, PropsWithChildren, Dispatch, SetStateAction } from 'react';
 import Link from 'next/link';
-import { InertiaLinkProps } from '@inertiajs/react';
 import { Transition } from '@headlessui/react';
 
 const DropDownContext = createContext<{
@@ -80,9 +79,10 @@ const Content = ({ align = 'right', width = '48', contentClasses = 'py-1 bg-whit
     );
 };
 
-const DropdownLink = ({ className = '', children, ...props }: InertiaLinkProps) => {
+const DropdownLink = ({ className = '', children, href, ...props }: React.ComponentProps<typeof Link>) => {
     return (
         <Link
+            href={href as any}
             {...props}
             className={
                 'block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out ' +

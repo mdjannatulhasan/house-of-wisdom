@@ -1,14 +1,15 @@
 import Link from 'next/link';
-import { InertiaLinkProps } from '@inertiajs/react';
 
 export default function ResponsiveNavLink({
     active = false,
     className = '',
     children,
+    href,
     ...props
-}: InertiaLinkProps & { active?: boolean }) {
+}: React.ComponentProps<typeof Link> & { active?: boolean }) {
     return (
         <Link
+            href={href as any}
             {...props}
             className={`w-full flex items-start ps-3 pe-4 py-2 border-l-4 ${
                 active

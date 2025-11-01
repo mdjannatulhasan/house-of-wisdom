@@ -90,7 +90,7 @@ const CurrentlyReading = ({ books }: { books: any }) => {
                                             <button
                                                 onClick={() =>
                                                     handleStatusChange(
-                                                        item.id,
+                                                        String(item.id),
                                                         'COMPLETED_READING'
                                                     )
                                                 }
@@ -103,7 +103,7 @@ const CurrentlyReading = ({ books }: { books: any }) => {
                                             <button
                                                 onClick={() =>
                                                     handleStatusChange(
-                                                        item.id,
+                                                        String(item.id),
                                                         'REMOVE'
                                                     )
                                                 }

@@ -2,12 +2,15 @@
 
 import { useState } from 'react';
 
-type Props = {};
+type Props = {
+    parentId?: string | null;
+    onSubmit: (content: string, parentId: string | null) => void;
+};
 
-const CommentForm = ({ parentId = null, onSubmit }) => {
+const CommentForm = ({ parentId = null, onSubmit }: Props) => {
     const [content, setContent] = useState('');
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         onSubmit(content, parentId);
         setContent('');

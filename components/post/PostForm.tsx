@@ -6,8 +6,9 @@ import InputCustom from '../common/InputCustom';
 import SubTitle from '../common/SubTitle';
 import BtnPrimary from '../common/BtnPrimary';
 import { useAppDispatch, useAppSelector } from '@/redux/hook';
-import { useEffect } from 'react';
-import CustomEditor from '../CustomEditor';
+import { useEffect, useState } from 'react';
+import dynamic from 'next/dynamic';
+const CustomEditor = dynamic(() => import('../CustomEditor'), { ssr: false });
 import { toast } from '../ui/use-toast';
 import { categoriesList } from '@/redux/features/category/categorySlice';
 import SelectCustom from '../common/SelectCustom';
@@ -20,11 +21,43 @@ function PostForm({}: Props) {
     const categories = useAppSelector(categoriesList);
 
     const { books } = useAppSelector((state) => state.book);
-    const { data, setData, post, errors, reset } = useForm({
+    const [data, setDataState] = useState({
         title: '',
         content: '',
-        category_id: null,
-    } as any);
+        category_id: null as number | null,
+    });
+    const [processing, setProcessing] = useState(false);
+    const [errors, setErrors] = useState<any>({});
+
+    const setData = (name: string, value: any) => {
+        setDataState((prev) => ({ ...prev, [name]: value }));
+    };
+
+    const reset = () => setDataState({ title: '', content: '', category_id: null });
+
+    const post = async (
+        url: string,
+        opts: { onSuccess?: () => void; onError?: () => void }
+    ) => {
+        setProcessing(true);
+        setErrors({});
+        try {
+            const formData = new FormData();
+            formData.append('title', data.title);
+            formData.append('content', data.content);
+            if (data.category_id != null) formData.append('category_id', String(data.category_id));
+            const res = await fetch(url, { method: 'POST', body: formData });
+            if (!res.ok) {
+                opts.onError?.();
+            } else {
+                opts.onSuccess?.();
+            }
+        } catch (e) {
+            opts.onError?.();
+        } finally {
+            setProcessing(false);
+        }
+    };
 
     // categories should be provided; no fetch here to avoid build deps
 
@@ -35,7 +68,7 @@ function PostForm({}: Props) {
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        post(route('add_post'), {
+        post('/api/posts', {
             onSuccess: () => {
                 toast({
                     variant: 'success',

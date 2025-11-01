@@ -7,7 +7,7 @@ import { useSession } from 'next-auth/react';
 
 type Props = {};
 
-const Header = (props: Props) => {
+export default function Header(props: Props) {
     const { data: session } = useSession();
     const auth = { user: session?.user || null };
     const [show, setShow] = useState(false);
@@ -180,11 +180,7 @@ const Header = (props: Props) => {
                                         Support
                                     </a>
                                     <hr className="my-2" />
-                                    <ResponsiveNavLink
-                                        method="post"
-                                        href={route('logout')}
-                                        as="button"
-                                    >
+                                    <ResponsiveNavLink href={route('logout')}>
                                         Log Out
                                     </ResponsiveNavLink>
                                 </motion.div>
@@ -195,6 +191,4 @@ const Header = (props: Props) => {
             </div>
         </header>
     );
-};
-
-export default Header;
+}

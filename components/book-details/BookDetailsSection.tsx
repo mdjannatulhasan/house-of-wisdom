@@ -50,7 +50,7 @@ const BookDetailsSection = ({ book }: { book: IBook }) => {
                 }
             }
         } catch (e) {
-            console.log(error);
+            console.log(e);
 
             toast({
                 variant: 'destructive',
@@ -143,7 +143,7 @@ const BookDetailsSection = ({ book }: { book: IBook }) => {
                                         Reviews
                                     </p>
                                     <div className="col-span-2 text-lg">
-                                        <Reviews id={singleBook?.id} />
+                                        <Reviews id={String(singleBook?.id ?? '')} />
                                     </div>
                                 </div>
                                 {singleBook?.status === 'pending' && (

@@ -6,8 +6,7 @@ import InputCustom from '../common/InputCustom';
 import SubTitle from '../common/SubTitle';
 import BtnPrimary from '../common/BtnPrimary';
 import { useAppDispatch, useAppSelector } from '@/redux/hook';
-import { useEffect } from 'react';
-import { fetchBooks } from '@/redux/features/book/bookSlice';
+import { useEffect, useState } from 'react';
 import CustomEditor from './../../components/CustomEditor';
 import { toast } from '../ui/use-toast';
 
@@ -16,14 +15,46 @@ type Props = {};
 function AddChapter({}: Props) {
     const dispatch = useAppDispatch();
     const { books } = useAppSelector((state) => state.book);
-    const { data, setData, post, errors, reset } = useForm({
+    const [data, setDataState] = useState({
         book_id: 0,
         title: '',
         content: '',
-    } as any);
+    });
+    const [processing, setProcessing] = useState(false);
+    const [errors, setErrors] = useState<any>({});
+
+    const setData = (name: string, value: any) => {
+        setDataState((prev) => ({ ...prev, [name]: value }));
+    };
+
+    const reset = () => setDataState({ book_id: 0, title: '', content: '' });
+
+    const post = async (
+        url: string,
+        opts: { onSuccess?: () => void; onError?: () => void }
+    ) => {
+        setProcessing(true);
+        setErrors({});
+        try {
+            const formData = new FormData();
+            formData.append('book_id', String(data.book_id));
+            formData.append('title', data.title);
+            formData.append('content', data.content);
+            const res = await fetch(url, { method: 'POST', body: formData });
+            if (!res.ok) {
+                opts.onError?.();
+            } else {
+                opts.onSuccess?.();
+            }
+        } catch (e) {
+            opts.onError?.();
+        } finally {
+            setProcessing(false);
+        }
+    };
 
     useEffect(() => {
-        dispatch(fetchBooks({}));
+        // optionally fetch books elsewhere
     }, []);
 
     const handleEditorChange = (content: string) => {
@@ -33,14 +64,13 @@ function AddChapter({}: Props) {
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        post(route('chapter_create'), {
+        post('/api/chapters', {
             onSuccess: () => {
                 toast({
                     variant: 'success',
                     title: 'Chapter added successfully.',
                     description: '',
                 });
-                dispatch(fetchBooks({}));
                 reset(); // Reset form fields
             },
             onError: () => {

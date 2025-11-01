@@ -87,7 +87,7 @@ const FinishedReading = ({ books }: { books: any }) => {
                                             <button
                                                 onClick={() =>
                                                     handleStatusChange(
-                                                        item.id,
+                                                        String(item.id),
                                                         'REMOVE'
                                                     )
                                                 }

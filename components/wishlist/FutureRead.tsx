@@ -91,7 +91,7 @@ const FutureRead = ({ books }: { books: any }) => {
                                             <button
                                                 onClick={() =>
                                                     handleStatusChange(
-                                                        item.id,
+                                                        String(item.id),
                                                         'READING'
                                                     )
                                                 }
@@ -104,7 +104,7 @@ const FutureRead = ({ books }: { books: any }) => {
                                             <button
                                                 onClick={() =>
                                                     handleStatusChange(
-                                                        item.id,
+                                                        String(item.id),
                                                         'REMOVE'
                                                     )
                                                 }

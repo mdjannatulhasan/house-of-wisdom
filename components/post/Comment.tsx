@@ -4,9 +4,22 @@ import { MessageCircle, ThumbsUp } from 'lucide-react';
 import React, { useState } from 'react';
 import CommentForm from './CommentForm';
 
-type Props = {};
+type CommentItem = {
+    id: string;
+    author: string;
+    date: string;
+    content: string;
+    likes: number;
+    replies: CommentItem[];
+};
 
-const Comment = ({ comment, level = 0, onReply }) => {
+type Props = {
+    comment: CommentItem;
+    level?: number;
+    onReply: (content: string, parentId: string | null) => void;
+};
+
+const Comment = ({ comment, level = 0, onReply }: Props) => {
     const [showReplyForm, setShowReplyForm] = useState(false);
 
     return (

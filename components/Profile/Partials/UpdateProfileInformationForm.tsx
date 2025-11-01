@@ -2,16 +2,15 @@ import InputError from '@/components/InputError';
 import InputLabel from '@/components/InputLabel';
 import PrimaryButton from '@/components/PrimaryButton';
 import TextInput from '@/components/TextInput';
-import Link from 'next/link';
 import { FormEventHandler, useState } from 'react';
 import { useSession } from 'next-auth/react';
 
 export default function UpdateProfileInformation({
-    mustVerifyEmail,
+    mustVerifyEmail = false,
     status,
     className = '',
 }: {
-    mustVerifyEmail: boolean;
+    mustVerifyEmail?: boolean;
     status?: string;
     className?: string;
 }) {
@@ -22,7 +21,7 @@ export default function UpdateProfileInformation({
         name: user?.name || '',
         email: user?.email || '',
     });
-    const [errors, setErrors] = useState<any>({});
+    const [errors, setErrors] = useState<Record<string, string>>({});
     const [processing, setProcessing] = useState(false);
     const [recentlySuccessful, setRecentlySuccessful] = useState(false);
 
@@ -46,7 +45,7 @@ export default function UpdateProfileInformation({
                 await update({ name: data.name, email: data.email });
                 setTimeout(() => setRecentlySuccessful(false), 2000);
             }
-        } catch (error) {
+        } catch {
             setErrors({ general: 'An error occurred' });
         } finally {
             setProcessing(false);
@@ -61,7 +60,8 @@ export default function UpdateProfileInformation({
                 </h2>
 
                 <p className="mt-1 text-sm text-gray-600">
-                    Update your account's profile information and email address.
+                    Update your account&apos;s profile information and email
+                    address.
                 </p>
             </header>
 
@@ -73,7 +73,9 @@ export default function UpdateProfileInformation({
                         id="name"
                         className="mt-1 block w-full"
                         value={data.name}
-                        onChange={(e) => setData({ ...data, name: e.target.value })}
+                        onChange={(e) =>
+                            setData({ ...data, name: e.target.value })
+                        }
                         required
                         isFocused
                         autoComplete="name"
@@ -90,7 +92,9 @@ export default function UpdateProfileInformation({
                         type="email"
                         className="mt-1 block w-full"
                         value={data.email}
-                        onChange={(e) => setData({ ...data, email: e.target.value })}
+                        onChange={(e) =>
+                            setData({ ...data, email: e.target.value })
+                        }
                         required
                         autoComplete="username"
                     />
@@ -98,20 +102,12 @@ export default function UpdateProfileInformation({
                     <InputError className="mt-2" message={errors.email} />
                 </div>
 
-                {mustVerifyEmail && user.email_verified_at === null && (
+                {mustVerifyEmail && (
                     <div>
                         <p className="text-sm mt-2 text-gray-800">
-                            Your email address is unverified.
-                            <Link
-                                href={route('verification.send')}
-                                method="post"
-                                as="button"
-                                className="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                            >
-                                Click here to re-send the verification email.
-                            </Link>
+                            Your email address is unverified. Please check your
+                            inbox for a verification link.
                         </p>
-
                         {status === 'verification-link-sent' && (
                             <div className="mt-2 font-medium text-sm text-green-600">
                                 A new verification link has been sent to your

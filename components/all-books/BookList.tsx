@@ -28,7 +28,7 @@ const BookList = ({ books, count }: BookListProps) => {
             }: IBookWithId) => (
                 <Book
                     key={id}
-                    code={id}
+                    code={String(id)}
                     title={title}
                     cover_image={cover_image}
                     genre={genre}

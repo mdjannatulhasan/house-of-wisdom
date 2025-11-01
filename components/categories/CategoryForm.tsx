@@ -1,17 +1,45 @@
-import { FormEvent, ChangeEvent } from 'react';
+import { FormEvent, ChangeEvent, useState } from 'react';
 // TODO: Replace Inertia useForm with useState + fetch
-// import { useForm } from '@inertiajs/react';
 import { useToast } from '../ui/use-toast';
 import InputCustom from '../common/InputCustom';
 import BtnPrimary from '../common/BtnPrimary';
 import SelectCustom from '../common/SelectCustom';
 
 const CategoryForm = () => {
-    const { data, setData, post, processing, errors, reset } = useForm({
+    const [data, setDataState] = useState({
         title: '',
         parent_id: '',
         menu_order: '',
     });
+    const [processing, setProcessing] = useState(false);
+    const [errors, setErrors] = useState<any>({});
+
+    const setData = (name: string, value: any) => {
+        setDataState((prev) => ({ ...prev, [name]: value }));
+    };
+
+    const reset = () => setDataState({ title: '', parent_id: '', menu_order: '' });
+
+    const post = async (
+        url: string,
+        opts: { data: FormData; onSuccess?: () => void; onError?: (e: any) => void }
+    ) => {
+        setProcessing(true);
+        setErrors({});
+        try {
+            const res = await fetch(url, { method: 'POST', body: opts.data });
+            if (!res.ok) {
+                const json = await res.json().catch(() => ({}));
+                opts.onError?.(json);
+            } else {
+                opts.onSuccess?.();
+            }
+        } catch (e) {
+            opts.onError?.(e);
+        } finally {
+            setProcessing(false);
+        }
+    };
 
     const categories = [
         { value: null, title: 'Select Category (optional)' },
@@ -31,7 +59,7 @@ const CategoryForm = () => {
         formData.append('parent_id', data.parent_id);
         formData.append('menu_order', data.menu_order);
 
-        post(route('add_category'), {
+        post('/api/categories', {
             data: formData,
             onSuccess: () => {
                 toast({
@@ -62,7 +90,7 @@ const CategoryForm = () => {
         }
     };
 
-    const handleSelectChange = (value) => {
+    const handleSelectChange = (value: any) => {
         setData('parent_id', value?.id);
     };
 

@@ -60,8 +60,8 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
                         >
                             <input
                                 type="checkbox"
-                                checked={selectedOptions.includes(option.id)}
-                                onChange={() => toggleOption(option.id)}
+                                checked={selectedOptions.includes(String(option.id))}
+                                onChange={() => toggleOption(String(option.id))}
                                 className="form-checkbox h-5 w-5 text-blue-500"
                             />
                             <span>{option.title}</span>
