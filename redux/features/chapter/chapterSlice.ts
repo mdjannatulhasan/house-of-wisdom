@@ -1,5 +1,7 @@
 import { IChapter } from '@/types/globalTypes';
+import { IBook } from '@/types/homeType';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import axios from 'axios';
 
 interface IChapterState {
     status: boolean;
@@ -25,22 +27,18 @@ export const fetchChapters = createAsyncThunk(
     'chapters/fetchChapters',
     async (bookId: number, { rejectWithValue }) => {
         try {
-            const params = new URLSearchParams();
-            params.append('book_id', String(bookId));
+            const params = {
+                book_id: bookId,
+            };
 
-            const response = await fetch(`/api/chapters?${params.toString()}`, {
-                method: 'GET',
-                credentials: 'include',
+            const response = await axios.get(route('chapter_by_book'), {
+                params,
             });
+            console.log(response);
 
-            if (!response.ok) {
-                throw new Error('Failed to fetch chapters');
-            }
-
-            const data = await response.json();
-            return data;
+            return response.data;
         } catch (error: any) {
-            return rejectWithValue(error.message);
+            return rejectWithValue(error.response.data);
         }
     }
 );
@@ -83,4 +81,3 @@ export const { toggleState, setIsLoading, setChapter, setContent } =
     chapterSlice.actions;
 
 export default chapterSlice.reducer;
-

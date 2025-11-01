@@ -1,5 +1,6 @@
 import { IBook } from '@/types/homeType';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import axios from 'axios';
 
 interface IBookState {
     status: boolean;
@@ -34,25 +35,19 @@ export const fetchBooks = createAsyncThunk(
         { rejectWithValue }
     ) => {
         try {
-            const params = new URLSearchParams();
-            if (args?.searchTerm) params.append('title', args.searchTerm);
-            if (args?.genre) params.append('genre', args.genre);
-            if (args?.year) params.append('year', String(args.year));
-            params.append('json', 'true');
+            const params = {
+                title: args?.searchTerm,
+                genre: args?.genre,
+                year: args?.year,
+                json: true,
+            };
 
-            const response = await fetch(`/api/books?${params.toString()}`, {
-                method: 'GET',
-                credentials: 'include',
-            });
+            const response = await axios.get('/books', { params });
+            console.log(response);
 
-            if (!response.ok) {
-                throw new Error('Failed to fetch books');
-            }
-
-            const data = await response.json();
-            return data.books;
+            return response?.data?.books;
         } catch (error: any) {
-            return rejectWithValue(error.message);
+            return rejectWithValue(error.response.data);
         }
     }
 );
@@ -113,4 +108,3 @@ export const {
 } = bookSlice.actions;
 
 export default bookSlice.reducer;
-

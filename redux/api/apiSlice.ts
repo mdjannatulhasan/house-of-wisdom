@@ -1,12 +1,18 @@
+// import { getCsrfToken } from '@/lib/csrftoken';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-export const api = createApi({
-  reducerPath: 'api',
-  baseQuery: fetchBaseQuery({
-    baseUrl: '/api',
-    credentials: 'include',
-  }),
-  tagTypes: ['Books', 'Book', 'Chapters', 'Categories', 'Posts', 'User', 'Wishlist'],
-  endpoints: () => ({}),
+const baseQuery = fetchBaseQuery({
+    baseUrl: process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000', // Use Next.js environment variable
+    prepareHeaders: (headers) => {
+        return headers;
+    },
 });
-
+export const api = createApi({
+    reducerPath: 'api',
+    // baseQuery: fetchBaseQuery({
+    //     baseUrl: 'https://book-catalog-server-smoky.vercel.app/api/v1',
+    // }),
+    baseQuery: baseQuery,
+    tagTypes: ['books', 'book', 'reviews', 'wishlist', 'my-books'],
+    endpoints: () => ({}),
+});

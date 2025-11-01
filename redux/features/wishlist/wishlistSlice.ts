@@ -69,4 +69,3 @@ export const {
 } = wishlistSlice.actions;
 
 export default wishlistSlice.reducer;
-

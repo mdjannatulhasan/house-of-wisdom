@@ -6,8 +6,7 @@ export type IBook = {
     title: string;
     cover_image: string;
     pdf_file?: string;
-    genre?: string;
-    category_id?: number;
+    genre: string;
     author?: string;
     publication_date?: string;
     reviews?: string[];
@@ -15,8 +14,6 @@ export type IBook = {
     status?: string;
     chapters?: IChapter[];
 };
-
 export type IBookWithId = IBook & {
     id: string;
 };
-

@@ -1,6 +1,7 @@
 import { RootState } from '@/redux/store';
 import { ICategory } from '@/types/globalTypes';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import axios from 'axios';
 
 interface ICategoryState {
     status: boolean;
@@ -24,19 +25,11 @@ export const fetchCategories = createAsyncThunk(
     'categories/fetchCategories',
     async (_, { rejectWithValue }) => {
         try {
-            const response = await fetch('/api/categories', {
-                method: 'GET',
-                credentials: 'include',
-            });
+            const response = await axios.get(route('category_list'));
 
-            if (!response.ok) {
-                throw new Error('Failed to fetch categories');
-            }
-
-            const data = await response.json();
-            return data;
+            return response.data;
         } catch (error: any) {
-            return rejectWithValue(error.message);
+            return rejectWithValue(error.response.data);
         }
     }
 );
@@ -75,4 +68,3 @@ const categorySlice = createSlice({
 export const { toggleState, setIsLoading, setCategory } = categorySlice.actions;
 export const categoriesList = (state: RootState) => state.categories.categories;
 export default categorySlice.reducer;
-

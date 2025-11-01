@@ -20,14 +20,3 @@ export type ICategory = {
     slug?: string;
     parent_id?: any;
 };
-
-export type IUser = {
-    id: number;
-    name: string;
-    email: string;
-    role: 'admin' | 'editor' | 'user';
-    emailVerifiedAt?: Date | null;
-    createdAt?: Date;
-    updatedAt?: Date;
-};
-
