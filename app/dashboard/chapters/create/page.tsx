@@ -9,7 +9,7 @@ import { useToast } from '@/components/ui/use-toast';
 export default function CreateChapterPage() {
     const { toast } = useToast();
     const [processing, setProcessing] = useState(false);
-    const [form, setForm] = useState({ book_id: '', title: '', content: '', order: 1 });
+    const [form, setForm] = useState({ book_id: '', title: '', order: 1 });
 
     const submit = async (e: FormEvent) => {
         e.preventDefault();
@@ -21,14 +21,13 @@ export default function CreateChapterPage() {
                 body: JSON.stringify({
                     book_id: Number(form.book_id),
                     title: form.title,
-                    content: form.content,
                     order: Number(form.order) || 1,
                 }),
             });
             const json = await res.json();
             if (!res.ok) throw new Error(json?.error || 'Failed');
             toast({ variant: 'success', title: 'Chapter created' });
-            setForm({ book_id: '', title: '', content: '', order: 1 });
+            setForm({ book_id: '', title: '', order: 1 });
         } catch (e: any) {
             toast({ variant: 'destructive', title: 'Failed', description: e.message });
         } finally {
@@ -56,13 +55,7 @@ export default function CreateChapterPage() {
                                 value={form.title}
                                 onChange={(e) => setForm({ ...form, title: e.target.value })}
                             />
-                            <InputCustom
-                                type="text"
-                                name="content"
-                                placeholder="Short content"
-                                value={form.content}
-                                onChange={(e) => setForm({ ...form, content: e.target.value })}
-                            />
+                            
                             <InputCustom
                                 type="number"
                                 name="order"

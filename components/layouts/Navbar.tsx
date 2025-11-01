@@ -123,7 +123,7 @@ const Navbar = () => {
                                                     </NavLink>
                                                 </li>
                                                 <li className="">
-                                                    <NavLink href="/dashboard/chapters/create">
+                                                    <NavLink href="/dashboard/chapters/content">
                                                         <GiNotebook />
                                                         <SheetClose asChild>
                                                             <span>

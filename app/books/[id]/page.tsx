@@ -21,7 +21,7 @@ async function getBook(id: string) {
     return {
       id: book.id,
       title: book.title,
-      cover_image: book.coverImage,
+      cover_image: book.coverImage ? `/${book.coverImage}` : '#',
       author: book.author,
       genre: book.category?.title || '',
       publication_date: book.publicationDate.toLocaleDateString(),

@@ -135,6 +135,39 @@
   font-variation-settings: 'FILL' 1;
 }
 
+/* WYSIWYG content isolation: prevent Tailwind from affecting editor HTML */
+:where(.tinymce-content, .tinymce-content *) {
+    all: revert;
+    font-family: inherit;
+    color: inherit;
+}
+
+/* Readability helpers inside editor content */
+.tinymce-content img {
+    max-width: 100%;
+    height: auto;
+}
+
+.tinymce-content pre,
+.tinymce-content code {
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.tinymce-content table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.tinymce-content th,
+.tinymce-content td {
+    border: 1px solid #e5e7eb; /* slate-200 */
+    padding: 8px;
+}
+.tinymce-content a {
+    color: #2565d0;
+    text-decoration: underline;
+}
+
 /* ============================================
    GLOBAL STYLES
    ============================================ */

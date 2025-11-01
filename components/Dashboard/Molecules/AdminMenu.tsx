@@ -22,7 +22,7 @@ const componentsDropDownMenuItems = [
     {
         id: 3,
         name: 'Add chapter content',
-        href: '/dashboard/chapters/create',
+        href: '/dashboard/chapters/content',
         icon: <SolarPenNewSquareBoldDuotone width={16} />,
     },
 ];

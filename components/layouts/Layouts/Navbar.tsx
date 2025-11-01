@@ -131,7 +131,7 @@ const Navbar = () => {
                                                 </li>
                                                 <li className="">
                                                     <NavLink
-                                                        href="/dashboard/chapters/create"
+                                                        href="/dashboard/chapters/content"
                                                     >
                                                         <GiNotebook />
                                                         <SheetClose asChild>

@@ -5,10 +5,11 @@ import { saveFile, validateFile } from '@/lib/upload';
 
 export async function GET(
   _req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const id = parseInt(params.id);
+    const { id: idStr } = await params;
+    const id = parseInt(idStr);
     const book = await prisma.book.findUnique({
       where: { id },
       include: {
@@ -30,11 +31,12 @@ export async function GET(
 
 export async function PATCH(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     await requireAuth();
-    const id = parseInt(params.id);
+    const { id: idStr } = await params;
+    const id = parseInt(idStr);
     const formData = await req.formData();
 
     const title = (formData.get('title') as string) || undefined;
@@ -80,11 +82,12 @@ export async function PATCH(
 
 export async function DELETE(
   _req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     await requireAuth();
-    const id = parseInt(params.id);
+    const { id: idStr } = await params;
+    const id = parseInt(idStr);
     await prisma.book.delete({ where: { id } });
     return NextResponse.json({ success: true }, { status: 200 });
   } catch (e: any) {
