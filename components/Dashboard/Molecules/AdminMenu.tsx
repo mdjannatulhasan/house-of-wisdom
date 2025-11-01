@@ -1,28 +1,28 @@
 import React, { useRef } from 'react';
 import Dropdown from './SideNavbar/Dropdown';
-import { SolarBook2BoldDuotone } from '@/assets/Backend/SolarBook2BoldDuotone';
-import { SolarPenNewSquareBoldDuotone } from '@/assets/Backend/SolarPenNewSquareBoldDuotone';
-import { Link } from '@inertiajs/react';
-import { SolarThreeSquaresLineDuotone } from '@/assets/Backend/SolarThreeSquaresLineDuotone';
-import { SolarFileTextBoldDuotone } from '@/assets/Backend/SolarFileTextBoldDuotone';
+import { SolarBook2BoldDuotone } from '@/public/assets/Backend/SolarBook2BoldDuotone';
+import { SolarPenNewSquareBoldDuotone } from '@/public/assets/Backend/SolarPenNewSquareBoldDuotone';
+import Link from 'next/link';;
+import { SolarThreeSquaresLineDuotone } from '@/public/assets/Backend/SolarThreeSquaresLineDuotone';
+import { SolarFileTextBoldDuotone } from '@/public/assets/Backend/SolarFileTextBoldDuotone';
 
 const componentsDropDownMenuItems = [
     {
         id: 1,
         name: 'Add a book',
-        href: route('books.create'),
+        href: '/dashboard/books/create',
         icon: <SolarPenNewSquareBoldDuotone width={16} />,
     },
     {
         id: 2,
         name: 'Add a chapter',
-        href: route('chapter'),
+        href: '/dashboard/chapters/create',
         icon: <SolarPenNewSquareBoldDuotone width={16} />,
     },
     {
         id: 3,
         name: 'Add chapter content',
-        href: route('book_content'),
+        href: '/dashboard/chapters/create',
         icon: <SolarPenNewSquareBoldDuotone width={16} />,
     },
 ];
@@ -30,13 +30,13 @@ const componentsDropDownMenuCategoryItems = [
     {
         id: 1,
         name: 'Add Category',
-        href: route('create_categories'),
+        href: '/dashboard',
         icon: <SolarPenNewSquareBoldDuotone width={16} />,
     },
     {
         id: 2,
         name: 'Edit Category',
-        href: route('create_categories'),
+        href: '/dashboard',
         icon: <SolarPenNewSquareBoldDuotone width={16} />,
     },
 ];
@@ -44,13 +44,13 @@ const componentsDropDownMenuPostItems = [
     {
         id: 1,
         name: 'Add Post',
-        href: route('create_post'),
+        href: '/dashboard',
         icon: <SolarPenNewSquareBoldDuotone width={16} />,
     },
     {
         id: 2,
         name: 'Edit Post',
-        href: route('create_post'),
+        href: '/dashboard',
         icon: <SolarPenNewSquareBoldDuotone width={16} />,
     },
 ];
@@ -72,7 +72,7 @@ export default function AdminMenu() {
                 <li className="menu-item">
                     <Link
                         className="group flex items-center gap-x-3.5 rounded-md px-3 py-2 text-sm font-medium text-default-700 transition-all hover:bg-default-900/5"
-                        href={route('dashboard')}
+                        href={'/dashboard'}
                     >
                         <i className="i-solar-home-smile-bold-duotone text-2xl"></i>
                         Dashboard

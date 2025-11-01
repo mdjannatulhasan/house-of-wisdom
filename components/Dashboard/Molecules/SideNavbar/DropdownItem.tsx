@@ -1,17 +1,32 @@
+'use client';
+
 import { TDropdownItem } from '@/types/dashboardTypes';
-import { Link, usePage } from '@inertiajs/react';
+import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
 
 // type Props = { name: string; icon?: string; id: number; href?: string };
 
 const DropdownItem = ({ name, icon, id, href }: TDropdownItem) => {
     const [active, setActive] = useState(false);
-    const { url } = usePage();
+    const url = usePathname();
     useEffect(() => {
-        if (url === new URL(href).pathname) {
+        const target = href || '';
+        const normalized = target.startsWith('http')
+            ? (() => {
+                  try {
+                      return new URL(target).pathname;
+                  } catch {
+                      return target;
+                  }
+              })()
+            : target;
+        if (url === normalized || url.startsWith(normalized)) {
             setActive(true);
+        } else {
+            setActive(false);
         }
-    }, [url]);
+    }, [url, href]);
     return (
         <li className="menu-item">
             <Link

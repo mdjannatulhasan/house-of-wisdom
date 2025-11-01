@@ -1,14 +1,16 @@
+'use client';
+
 import { useState, PropsWithChildren, ReactNode } from 'react';
 import { User } from '@/types';
-import '../../css/admin.min.css';
-import '../../css/admin.css';
-import '../../css/icons.css';
+import '../css/admin.min.css';
+import '../css/admin.css';
+import '../css/icons.css';
 import SideNavbar from '@/components/Dashboard/Sections/SideNavbar';
 import Header from '@/components/Dashboard/Sections/Header';
 import BreadCrumbLink from '@/components/Dashboard/Atoms/BreadCrumbLink';
 import BreadCrumbSeparator from '@/components/Dashboard/Atoms/BreadCrumbSeparator';
 import Footer from '@/components/Dashboard/Sections/Footer';
-import { Head } from '@inertiajs/react';
+
 export default function Authenticated({
     user,
     header,
@@ -19,7 +21,7 @@ export default function Authenticated({
 
     return (
         <div className="wrapper">
-            <Head title="Dashboard" />
+            
             <SideNavbar />
             <div className="page-content">
                 <Header />

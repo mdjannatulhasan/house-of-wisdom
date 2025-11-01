@@ -1,3 +1,5 @@
+'use client';
+
 import { IBookWithId } from '@/types/homeType';
 import Container from '../common/Container';
 import { useAppSelector } from '@/redux/hook';
@@ -8,11 +10,13 @@ import { useDeleteBookMutation } from '@/redux/features/book/bookApi';
 import { useToast } from '../ui/use-toast';
 import { useDispatch } from 'react-redux';
 import { handleLogout } from '@/redux/features/user/userSlice';
-import { Head, Link, router, usePage } from '@inertiajs/react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import Reviews from './Reviews';
 
-const BookDetailsSection = () => {
-    const singleBook = usePage().props.book as IBookWithId;
+const BookDetailsSection = ({ book }: { book: IBookWithId }) => {
+    const singleBook = book;
+    const router = useRouter();
 
     const { id, role } = useAppSelector((state) => state.user);
 
@@ -42,12 +46,12 @@ const BookDetailsSection = () => {
             const response = await deleteBook(singleBook?.id);
             console.log(response);
             if ('data' in response) {
-                toast({
-                    variant: 'success',
-                    title: 'Book deleted successfully.',
-                    description: '',
-                });
-                router.visit(`/books`);
+                        toast({
+                            variant: 'success',
+                            title: 'Book deleted successfully.',
+                            description: '',
+                        });
+                        router.push(`/books`);
             } else {
                 toast({
                     variant: 'destructive',
@@ -74,7 +78,7 @@ const BookDetailsSection = () => {
 
     return (
         <section className="pb-12">
-            <Head title={singleBook?.title} />
+            
             <Container>
                 <div className="max-w-[1080px] mx-auto shadow  p-12 rounded-md">
                     <div className={`grid grid-cols-12 gap-9 rounded-md`}>
@@ -154,9 +158,9 @@ const BookDetailsSection = () => {
                                     <p className="col-span-1 text-lg font-medium">
                                         Reviews
                                     </p>
-                                    <p className="col-span-2 text-lg">
+                                    <div className="col-span-2 text-lg">
                                         <Reviews id={singleBook?.id} />
-                                    </p>
+                                    </div>
                                 </div>
                                 {singleBook?.status === 'pending' && (
                                     <p className="text-[16px] font-normal text-[#ff5b5b]">

@@ -1,5 +1,6 @@
 import { FormEvent, ChangeEvent } from 'react';
-import { useForm } from '@inertiajs/react';
+// TODO: Replace Inertia useForm with useState + fetch
+// import { useForm } from '@inertiajs/react';
 import { useToast } from '../ui/use-toast';
 import InputCustom from '../common/InputCustom';
 import BtnPrimary from '../common/BtnPrimary';

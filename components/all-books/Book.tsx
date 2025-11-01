@@ -1,8 +1,10 @@
+'use client';
+
 import { useWishlist } from '@/lib/hooks/useWishlist';
 import { useAppSelector } from '@/redux/hook';
 import { IBook } from '@/types/homeType';
 import { GiHearts } from 'react-icons/gi';
-import { Link } from '@inertiajs/react';
+import Link from 'next/link';;
 
 const Book = ({
     title,

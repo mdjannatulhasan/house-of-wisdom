@@ -1,4 +1,7 @@
-import { useForm } from '@inertiajs/react';
+'use client';
+
+// TODO: Replace Inertia useForm with useState + fetch
+// import { useForm } from '@inertiajs/react';
 import InputCustom from '../common/InputCustom';
 import SubTitle from '../common/SubTitle';
 import BtnPrimary from '../common/BtnPrimary';

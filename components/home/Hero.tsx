@@ -1,10 +1,8 @@
-import heroImg from '../../assets/images/hero.webp';
-
 const Hero = () => {
     return (
         <section
             style={{
-                backgroundImage: `url(${heroImg})`,
+                backgroundImage: `url(/assets/images/hero.webp)`,
             }}
             className="relative bg-cover bg-center"
         >

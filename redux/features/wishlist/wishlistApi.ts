@@ -54,21 +54,6 @@ const wishlistApi = api.injectEndpoints({
             }),
             invalidatesTags: ['wishlist'],
         }),
-        getReviews: builder.query({
-            query: (id) => `/reviews/${id}`,
-            providesTags: ['reviews'],
-        }),
-        setReviews: builder.mutation({
-            query: ({ data }) => ({
-                headers: {
-                    Authorization: `${localStorage.getItem('token')}`,
-                },
-                url: `/reviews`,
-                method: 'POST',
-                body: data,
-            }),
-            invalidatesTags: ['reviews'],
-        }),
     }),
 });
 
@@ -78,7 +63,5 @@ export const {
     useGetSingleWishlistQuery,
     useUpdateWishlistMutation,
     useDeleteWishlistMutation,
-    useGetReviewsQuery,
-    useSetReviewsMutation,
     useUpdateReadinglistMutation,
 } = wishlistApi;

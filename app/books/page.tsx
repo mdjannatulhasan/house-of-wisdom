@@ -1,73 +1,57 @@
+'use client';
+
+import { useEffect, useState, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import MainLayout from '@/components/layouts/MainLayout';
 import Hero from '@/components/all-books/Hero';
 import BookList from '@/components/all-books/BookList';
-import { prisma } from '@/lib/prisma';
 
-export const dynamic = 'force-dynamic';
+function AllBooksContent() {
+  const searchParams = useSearchParams();
+  const [books, setBooks] = useState([]);
+  const [count, setCount] = useState(0);
+  const [loading, setLoading] = useState(true);
 
-async function getBooks(searchParams: any) {
-  try {
-    const { searchTerm, genre, year } = searchParams || {};
-    
-    const where: any = {};
-    
-    if (searchTerm) {
-      where.OR = [
-        { title: { contains: searchTerm, mode: 'insensitive' } },
-        { author: { contains: searchTerm, mode: 'insensitive' } },
-      ];
+  useEffect(() => {
+    async function fetchBooks() {
+      setLoading(true);
+      const searchTerm = searchParams.get('searchTerm') || '';
+      const genre = searchParams.get('genre') || '';
+      const year = searchParams.get('year') || '';
+      
+      try {
+        const response = await fetch(`/api/books?searchTerm=${searchTerm}&genre=${genre}&year=${year}`);
+        const data = await response.json();
+        setBooks(data.books || []);
+        setCount(data.count || 0);
+      } catch (error) {
+        console.error('Error fetching books:', error);
+      } finally {
+        setLoading(false);
+      }
     }
-    
-    if (year) {
-      where.publicationDate = {
-        gte: new Date(`${year}-01-01`),
-        lt: new Date(`${parseInt(year) + 1}-01-01`),
-      };
-    }
-    
-    const [books, count] = await Promise.all([
-      prisma.book.findMany({
-        where,
-        orderBy: {
-          createdAt: 'desc',
-        },
-        include: {
-          category: true,
-        },
-      }),
-      prisma.book.count({ where }),
-    ]);
-    
-    return {
-      books: books.map(book => ({
-        id: book.id,
-        title: book.title,
-        cover_image: `/${book.coverImage}`,
-        author: book.author,
-        genre: book.category?.title || genre || '',
-        publication_date: book.publicationDate.toISOString(),
-        status: 'active',
-      })),
-      count,
-    };
-  } catch (error) {
-    console.error('Error fetching books:', error);
-    return { books: [], count: 0 };
+
+    fetchBooks();
+  }, [searchParams]);
+
+  if (loading) {
+    return <div className="container py-12">Loading...</div>;
   }
-}
-
-export default async function AllBooksPage({
-  searchParams,
-}: {
-  searchParams: Promise<any>;
-}) {
-  const params = await searchParams;
-  const { books, count } = await getBooks(params);
 
   return (
-    <MainLayout>
-      <Hero filters={params} />
+    <>
+      <Hero />
       <BookList books={books} count={count} />
+    </>
+  );
+}
+
+export default function AllBooksPage() {
+  return (
+    <MainLayout>
+      <Suspense fallback={<div className="container py-12">Loading...</div>}>
+        <AllBooksContent />
+      </Suspense>
     </MainLayout>
   );
 }

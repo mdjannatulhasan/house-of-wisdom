@@ -1,5 +1,8 @@
+'use client';
+
 import { useState, createContext, useContext, PropsWithChildren, Dispatch, SetStateAction } from 'react';
-import { Link, InertiaLinkProps } from '@inertiajs/react';
+import Link from 'next/link';
+import { InertiaLinkProps } from '@inertiajs/react';
 import { Transition } from '@headlessui/react';
 
 const DropDownContext = createContext<{

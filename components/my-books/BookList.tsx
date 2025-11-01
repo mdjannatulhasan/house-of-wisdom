@@ -1,8 +1,10 @@
+'use client';
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Container from '../common/Container';
 import SecTitle from '../common/SecTitle';
 import Book from './Book';
-import { Link } from '@inertiajs/react';
+import Link from 'next/link';;
 import { BiPlus } from 'react-icons/bi';
 import { Skeleton } from '../ui/skeleton';
 import { IBookWithId } from '@/types/homeType';
@@ -48,7 +50,7 @@ const BookList = () => {
                     </SecTitle>
                     <Link
                         className="text-xl text-blue-600 font-semibold link flex gap-1 items-center"
-                        href={route('books.create')}
+                        href="/dashboard/books/create"
                     >
                         <BiPlus /> <span>Add Book</span>
                     </Link>

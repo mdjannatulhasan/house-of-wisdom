@@ -1,9 +1,11 @@
+'use client';
+
 import { useState, PropsWithChildren, ReactNode } from 'react';
 import ApplicationLogo from '@/components/ApplicationLogo';
 import Dropdown from '@/components/Dropdown';
 import NavLink from '@/components/NavLink';
 import ResponsiveNavLink from '@/components/ResponsiveNavLink';
-import { Link } from '@inertiajs/react';
+import Link from 'next/link';;
 import { User } from '@/types';
 
 export default function Authenticated({

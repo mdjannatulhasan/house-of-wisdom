@@ -4,11 +4,12 @@ import SecTitle from '../common/SecTitle';
 import SubTitle from '../common/SubTitle';
 import BtnPrimary from '../common/BtnPrimary';
 import Book from '../all-books/Book';
-import { usePage } from '@inertiajs/react';
 
-const BookList = () => {
-    const books = usePage()?.props.books as any;
+interface BookListProps {
+    books: IBookWithId[];
+}
 
+const BookList = ({ books }: BookListProps) => {
     let bookItems = books?.map(
         ({
             id,

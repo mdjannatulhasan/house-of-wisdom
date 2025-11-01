@@ -1,12 +1,15 @@
+'use client';
+
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { usePage } from '@inertiajs/react';
 import ResponsiveNavLink from '@/components/ResponsiveNavLink';
+import { useSession } from 'next-auth/react';
 
 type Props = {};
 
 const Header = (props: Props) => {
-    const { auth }: any = usePage().props;
+    const { data: session } = useSession();
+    const auth = { user: session?.user || null };
     const [show, setShow] = useState(false);
 
     return (

@@ -1,3 +1,5 @@
+'use client';
+
 import { useAppSelector } from '@/redux/hook';
 import { IBook } from '@/types/homeType';
 

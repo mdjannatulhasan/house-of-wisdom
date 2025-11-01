@@ -1,5 +1,7 @@
-import { Link, usePage } from '@inertiajs/react';
-import logo from '../assets/images/logo.png';
+'use client';
+
+import Link from 'next/link';
+import logo from '@/public/assets/images/logo.png';
 import { LucideAlignRight } from 'lucide-react';
 import { GiBookCover, GiHearts, GiHouse, GiNotebook } from 'react-icons/gi';
 import { BiLogIn, BiSolidUserPlus } from 'react-icons/bi';
@@ -16,10 +18,11 @@ import {
     SheetTrigger,
 } from '@/components/ui/sheet';
 import NavLink from '@/components/common/NavLink';
-import TopbarLogo from '@/assets/TopbarLogo';
+import TopbarLogo from '@/public/assets/TopbarLogo';
+import { useSession, signOut } from 'next-auth/react';
 
 const Navbar = () => {
-    const { auth }: any = usePage().props;
+    const { data: session } = useSession();
     const { email } = useAppSelector((state) => state.user);
     const dispatch = useAppDispatch();
 
@@ -34,22 +37,21 @@ const Navbar = () => {
                     </div>
                     <div className="min-w-[200px]">
                         <ul className="flex justify-end">
-                            {auth?.user ? (
+                            {session?.user ? (
                                 <li>
                                     <Button
                                         className="text-md"
                                         variant="link"
                                         asChild
                                     >
-                                        <Link
-                                            href={route('logout')}
-                                            onClick={() => {
+                                        <button
+                                            onClick={async () => {
+                                                await signOut({ redirect: false });
                                                 dispatch(handleLogout());
                                             }}
-                                            method="post"
                                         >
                                             Log out
-                                        </Link>
+                                        </button>
                                     </Button>
                                 </li>
                             ) : (
@@ -59,7 +61,7 @@ const Navbar = () => {
                                         variant="link"
                                         asChild
                                     >
-                                        <Link href={route('login')}>
+                                        <Link href="/login">
                                             Sign In
                                         </Link>
                                     </Button>
@@ -117,9 +119,7 @@ const Navbar = () => {
                                                 </li>
                                                 <li className="">
                                                     <NavLink
-                                                        href={route(
-                                                            'books.create'
-                                                        )}
+                                                        href="/dashboard/books/create"
                                                     >
                                                         <GiNotebook />
                                                         <SheetClose asChild>
@@ -131,7 +131,7 @@ const Navbar = () => {
                                                 </li>
                                                 <li className="">
                                                     <NavLink
-                                                        href={route('chapter')}
+                                                        href="/dashboard/chapters/create"
                                                     >
                                                         <GiNotebook />
                                                         <SheetClose asChild>
@@ -176,9 +176,7 @@ const Navbar = () => {
                                                         </li>
                                                         <li>
                                                             <NavLink
-                                                                href={route(
-                                                                    'register'
-                                                                )}
+                                                                href="/register"
                                                             >
                                                                 <BiSolidUserPlus />
                                                                 <span>

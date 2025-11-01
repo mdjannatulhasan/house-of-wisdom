@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { Link } from '@inertiajs/react';
+import Link from 'next/link';;
 
 const NavLink = ({ children, href }: { children: ReactNode; href: string }) => {
     return (

@@ -1,5 +1,8 @@
-import { FormEvent, ChangeEvent, useEffect } from 'react';
-import { useForm } from '@inertiajs/react';
+'use client';
+
+import { FormEvent, ChangeEvent, useEffect, useState } from 'react';
+// TODO: Replace Inertia useForm with useState + fetch
+// import { useForm } from '@inertiajs/react';
 import { useToast } from '../ui/use-toast';
 import InputCustom from '../common/InputCustom';
 import BtnPrimary from '../common/BtnPrimary';
@@ -11,19 +14,25 @@ import {
 import SelectCustom from '../common/SelectCustom';
 import { ICategory } from '@/types/globalTypes';
 
-const BookForm = () => {
+interface BookFormProps {
+    book?: any;
+}
+
+const BookForm = ({ book }: BookFormProps = {} as BookFormProps) => {
     const dispatch = useAppDispatch();
     const categories = useAppSelector(categoriesList);
 
-    const { data, setData, post, processing, errors, reset } = useForm({
+    const [data, setData] = useState({
         title: '',
-        cover_image: null as any, // Handle file uploads
+        cover_image: null as File | null,
         price: 0,
         category_id: '',
         publication_date: '',
         author: '',
-        pdf_file: null as any,
+        pdf_file: null as File | null,
     });
+    const [processing, setProcessing] = useState(false);
+    const [errors, setErrors] = useState<any>({});
 
     useEffect(() => {
         dispatch(fetchCategories());
@@ -31,46 +40,56 @@ const BookForm = () => {
 
     const { toast } = useToast();
 
-    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        setProcessing(true);
+        setErrors({});
 
         const formData = new FormData();
         formData.append('title', data.title);
-        formData.append('cover_image', data.cover_image as File); // Append file
+        if (data.cover_image) formData.append('cover_image', data.cover_image);
         formData.append('price', String(data.price));
         formData.append('category_id', data.category_id);
         formData.append('publication_date', data.publication_date);
         formData.append('author', data.author);
-        formData.append('pdf_file', data.pdf_file as File); // Append file
+        if (data.pdf_file) formData.append('pdf_file', data.pdf_file);
 
-        post('/books', {
-            data: formData,
-            onSuccess: () => {
-                toast({
-                    variant: 'success',
-                    title: 'Book added successfully.',
-                    description: '',
-                });
-                reset();
-            },
-            onError: (errors) => {
-                const errorMessage =
-                    errors?.message || 'Error in form submission';
+        try {
+            const res = await fetch('/api/books', { method: 'POST', body: formData });
+            const result = await res.json();
+            if (!res.ok) {
                 toast({
                     variant: 'destructive',
                     title: 'Book creation Failed.',
-                    description: errorMessage,
+                    description: result?.error || 'Error in form submission',
                 });
-            },
-        });
+            } else {
+                toast({ variant: 'success', title: 'Book added successfully.', description: '' });
+                setData({
+                    title: '',
+                    cover_image: null,
+                    price: 0,
+                    category_id: '',
+                    publication_date: '',
+                    author: '',
+                    pdf_file: null,
+                });
+            }
+        } catch (err) {
+            toast({ variant: 'destructive', title: 'Book creation Failed.', description: 'Network error' });
+        } finally {
+            setProcessing(false);
+        }
     };
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value, type, files } = e.target;
         if (type === 'file') {
-            setData(name as any, files?.[0] || null);
+            setData((prev) => ({ ...prev, [name]: files?.[0] || null }));
+        } else if (type === 'number') {
+            setData((prev) => ({ ...prev, [name]: Number(value) }));
         } else {
-            setData(name as any, type === 'number' ? parseFloat(value) : value);
+            setData((prev) => ({ ...prev, [name]: value }));
         }
     };
 
@@ -99,9 +118,7 @@ const BookForm = () => {
                         <div>
                             <SelectCustom
                                 name="Please select a category"
-                                onChange={(item: any) =>
-                                    setData('category_id', item?.id)
-                                }
+                                onChange={(item: any) => setData((prev) => ({ ...prev, category_id: item?.id }))}
                                 options={categories as any}
                             />
                         </div>
@@ -124,10 +141,7 @@ const BookForm = () => {
                             />
                         </div>
                         <div className="lg:col-span-2">
-                            <label
-                                className="m-0 pb-1 block"
-                                htmlFor="pdf_file"
-                            >
+                            <label className="m-0 pb-1 block" htmlFor="pdf_file">
                                 Please add PDF (optional):
                             </label>
                             <InputCustom

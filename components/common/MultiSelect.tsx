@@ -1,3 +1,5 @@
+'use client';
+
 import { IBookWithId } from '@/types/homeType';
 import React, { useState, useRef, useEffect } from 'react';
 

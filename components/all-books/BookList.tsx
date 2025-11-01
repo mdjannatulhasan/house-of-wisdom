@@ -1,18 +1,18 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+'use client';
+
 import Container from '../common/Container';
 import SecTitle from '../common/SecTitle';
 import Book from './Book';
-import { Link, usePage } from '@inertiajs/react';
+import Link from 'next/link';
 import { BiPlus } from 'react-icons/bi';
-import { Skeleton } from '../ui/skeleton';
 import { IBookWithId } from '@/types/homeType';
-import { useAppSelector } from '@/redux/hook';
 
-const BookList = () => {
-    const { books, count }: { books: IBookWithId[]; count: number } = usePage()
-        ?.props as any;
+interface BookListProps {
+    books: IBookWithId[];
+    count: number;
+}
 
-    console.log(books);
+const BookList = ({ books, count }: BookListProps) => {
 
     let bookItems;
     if (books?.length) {
@@ -47,7 +47,7 @@ const BookList = () => {
                     <SecTitle>All Books {count && `(${count})`}</SecTitle>
                     <Link
                         className="text-xl text-blue-600 font-semibold link flex gap-1 items-center"
-                        href={route('books.create')}
+                        href="/dashboard/books/create"
                     >
                         <BiPlus /> <span>Add Book</span>
                     </Link>

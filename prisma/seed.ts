@@ -70,8 +70,8 @@ async function main() {
     data: {
       title: 'Crisis in the muslim mind',
       author: 'Abdul Hamid Abu Sulayman',
-      coverImage: 'storage/covers/EXjx0or86xHV1kWARr9kNy6asFQrVI4KwtVBTFjb.png',
-      pdfFile: 'storage/pdf/F5vZwNH6HIGhXNi4dxCLWgGAw1kdMP9PPuUR1Wef.pdf',
+        coverImage: 'covers/0KMTgyomCp2eArrmIwgHEIpAAOPQGbUitZg5bzM6.png',
+      pdfFile: 'pdf/F5vZwNH6HIGhXNi4dxCLWgGAw1kdMP9PPuUR1Wef.pdf',
       type: 'text',
       publicationDate: new Date('2024-10-09'),
       createdAt: new Date('2024-10-08 11:24:28'),
@@ -83,8 +83,8 @@ async function main() {
     data: {
       title: 'To be a Muslim',
       author: 'Fathi Yakan',
-      coverImage: 'storage/covers/Eq8a4TazDPcD9lAbwFihEHmg29NcG5JgdIIwUzY6.jpg',
-      pdfFile: 'storage/pdf/LkotDcgozFOBvas0Eaeon62YyhegkbYLx1AKZ127.pdf',
+        coverImage: 'covers/2zjl2W2XNluwXfD61iY351Ee1GvCPa9oVLYVgKmI.png',
+      pdfFile: 'pdf/LkotDcgozFOBvas0Eaeon62YyhegkbYLx1AKZ127.pdf',
       type: 'text',
       publicationDate: new Date('2024-10-09'),
       createdAt: new Date('2024-10-08 11:29:42'),
@@ -96,7 +96,7 @@ async function main() {
     data: {
       title: 'Islam: Grundläggande Tro och Praktiker',
       author: 'Wisdom Publisher',
-      coverImage: 'storage/covers/My8nvRr8SsZjouqYnfUaQ7LoXu2vH76ScsJFTcGd.jpg',
+        coverImage: 'covers/Bpoc8umQh75zsq9C3GmczfjlyAvQRy1QxwWKmFkd.jpg',
       pdfFile: '',
       type: 'text',
       publicationDate: new Date('2024-11-24'),

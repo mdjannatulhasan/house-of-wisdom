@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Red_Hat_Display } from 'next/font/google';
 import './globals.css';
+import SessionWrapper from './SessionWrapper';
 import Providers from './Providers';
 
 const redHatDisplay = Red_Hat_Display({ subsets: ['latin'] });
@@ -17,8 +18,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={redHatDisplay.className}>
-        <Providers>{children}</Providers>
+      <body suppressHydrationWarning className={redHatDisplay.className}>
+        <SessionWrapper>
+          <Providers>{children}</Providers>
+        </SessionWrapper>
       </body>
     </html>
   );

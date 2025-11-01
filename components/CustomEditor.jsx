@@ -69,7 +69,6 @@ import {
     Undo,
 } from 'ckeditor5';
 import 'ckeditor5/ckeditor5.css';
-import './../../css/customEditor.css';
 
 const CustomEditor = ({ handleEditorChange, initialContent = '' }) => {
     const editorContainerRef = useRef(null);

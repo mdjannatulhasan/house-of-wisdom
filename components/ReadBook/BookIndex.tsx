@@ -1,3 +1,5 @@
+'use client';
+
 import { setContent } from '@/redux/features/chapter/chapterSlice';
 import { useAppDispatch } from '@/redux/hook';
 import { IChapter } from '@/types/globalTypes';

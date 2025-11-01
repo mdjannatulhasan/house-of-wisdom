@@ -1,23 +1,55 @@
-import React, { Fragment, ReactElement, useEffect, useState } from 'react';
+'use client';
+
+import React, { Fragment, ReactElement, useEffect, useMemo, useState } from 'react';
 import DropdownToggleButton from '../../Atoms/DropdownToggleButton';
 import { TDropdownItem } from '@/types/dashboardTypes';
 import DropdownItem from './DropdownItem';
 import { AnimatePresence, motion } from 'framer-motion';
-import { usePage } from '@inertiajs/react';
+import { usePathname } from 'next/navigation';
 
 type Props = { name: string; items: TDropdownItem[]; icon: ReactElement };
 
 const Dropdown = ({ name, items, icon }: Props) => {
-    const { url } = usePage();
-    const [showItems, setShowItems] = useState(false);
+    const url = usePathname();
+    const storageKey = `admin.dropdown.${name}`;
 
-    useEffect(() => {
-        items.forEach((item) => {
-            if (url === new URL(item.href).pathname) {
-                setShowItems(true);
-            }
+    const isActiveByUrl = useMemo(() => {
+        return items.some((item) => {
+            const target = item.href || '';
+            const normalized = target.startsWith('http')
+                ? (() => {
+                      try {
+                          return new URL(target).pathname;
+                      } catch {
+                          return target;
+                      }
+                  })()
+                : target;
+            return url === normalized || url.startsWith(normalized);
         });
     }, [items, url]);
+
+    const [showItems, setShowItems] = useState<boolean>(() => {
+        // initialize from localStorage if present, else derive from URL
+        try {
+            const saved = localStorage.getItem(storageKey);
+            if (saved === 'true') return true;
+            if (saved === 'false') return false;
+        } catch {}
+        return isActiveByUrl;
+    });
+
+    // Persist user preference
+    useEffect(() => {
+        try {
+            localStorage.setItem(storageKey, String(showItems));
+        } catch {}
+    }, [showItems, storageKey]);
+
+    // On route change, only open if currently closed and the URL matches; never force-close
+    useEffect(() => {
+        if (!showItems && isActiveByUrl) setShowItems(true);
+    }, [isActiveByUrl, showItems]);
 
     const dropdownItems = items.map((item) => {
         return (

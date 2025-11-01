@@ -1,10 +1,8 @@
-import heroImg from '../../assets/images/addBook.jpg';
-
 const Hero = () => {
     return (
         <section
             style={{
-                backgroundImage: `url(${heroImg})`,
+                backgroundImage: `url(/assets/images/addBook.jpg)`,
             }}
             className="relative bg-cover bg-center"
         >

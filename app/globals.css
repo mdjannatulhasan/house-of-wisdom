@@ -1,77 +1,184 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
 
-@layer base {
-    :root {
-        --text-primary: 230 14% 16%;
-        --text-secondary: 240 3% 58%;
+@theme {
+  /* ============================================
+     CUSTOM COLOR PALETTE
+     ============================================ */
+  
+  /* Blue Scale (Primary Brand Color) */
+  --color-blue-50: #f0f8fe;
+  --color-blue-100: #dceefd;
+  --color-blue-200: #c2e1fb;
+  --color-blue-300: #97d0f9;
+  --color-blue-400: #66b6f4;
+  --color-blue-500: #4397ee;
+  --color-blue-600: #2d7ae3;
+  --color-blue-700: #2565d0;
+  --color-blue-800: #2554ad;
+  --color-blue-900: #234785;
+  --color-blue-950: #1a2c51;
 
-        --background: 0 0% 100%;
-        --foreground: 222.2 47.4% 11.2%;
+  /* Orange Scale */
+  --color-orange-500: #F77F00;
+  
+  /* Semantic Colors */
+  --color-primary: #4397ee;
+  --color-secondary: #747a80;
+  --color-success: #20b799;
+  --color-info: #3cbade;
+  --color-warning: #efb540;
+  --color-danger: #fa5944;
+  --color-light: #e9edf3;
+  --color-dark: #222a3e;
 
-        --muted: 210 40% 96.1%;
-        --muted-foreground: 215.4 16.3% 46.9%;
+  /* Shadcn UI Integration */
+  --color-background: #ffffff;
+  --color-foreground: #0a0a0a;
+  --color-muted: #f1f5f9;
+  --color-muted-foreground: #64748b;
+  --color-popover: #ffffff;
+  --color-popover-foreground: #0a0a0a;
+  --color-card: #ffffff;
+  --color-card-foreground: #0a0a0a;
+  --color-border: #e2e8f0;
+  --color-input: #e2e8f0;
+  --color-primary-foreground: #ffffff;
+  --color-accent: #f1f5f9;
+  --color-accent-foreground: #0a0a0a;
+  --color-destructive: #ef4444;
+  --color-destructive-foreground: #ffffff;
+  --color-ring: #94a3b8;
 
-        --popover: 0 0% 100%;
-        --popover-foreground: 222.2 47.4% 11.2%;
+  /* Typography */
+  --font-family-base: "Montserrat", ui-sans-serif, system-ui, sans-serif;
+  --font-family-sans: "Red Hat Display", ui-sans-serif, system-ui, sans-serif;
 
-        --card: 0 0% 100%;
-        --card-foreground: 222.2 47.4% 11.2%;
+  /* Custom Spacing */
+  --spacing-15: 60px;
+  --spacing-18: 72px;
+  --spacing-sidenav: 280px;
+  --spacing-topbar: 80px;
 
-        --border: 214.3 31.8% 91.4%;
-        --input: 214.3 31.8% 91.4%;
-
-        --primary: 223 100% 61%;
-        --primary-foreground: 210 40% 98%;
-
-        --secondary: 210 40% 96.1%;
-        --secondary-foreground: 222.2 47.4% 11.2%;
-
-        --accent: 210 40% 96.1%;
-        --accent-foreground: 222.2 47.4% 11.2%;
-
-        --destructive: 0 72% 51%;
-        --destructive-foreground: 210 40% 98%;
-
-        --ring: 215 20.2% 65.1%;
-
-        --radius: 0.5rem;
-    }
+  /* Border Radius */
+  --radius: 0.5rem;
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
 }
 
-body * {
-    font-family: 'Red Hat Display', sans-serif;
+/* ============================================
+   CONTAINER UTILITY (Tailwind v4)
+   ============================================ */
+.container {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
-.shadow {
-    box-shadow: 0px 10px 12px -3px rgba(0, 0, 0, 0.1),
-        0px 4px 6px -2px rgba(0, 0, 0, 0.05);
-}
-
-.nav-link:hover * {
-    color: #1168e2 !important;
-}
-
-.link * {
-    color: #2d7ae3 !important;
-}
-
-.link:hover * {
-    color: #19509d !important;
+@media (min-width: 640px) {
+  .container {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
 }
 
 @media (min-width: 1024px) {
-    .lg\:text-5xl {
-        font-size: 3rem;
-        line-height: 1.3 !important;
-    }
+  .container {
+    padding-left: 4rem;
+    padding-right: 4rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .container {
+    padding-left: 5rem;
+    padding-right: 5rem;
+  }
+}
+
+@media (min-width: 1400px) {
+  .container {
+    max-width: 1400px;
+    padding-left: 4rem;
+    padding-right: 4rem;
+  }
+}
+
+/* ============================================
+   CUSTOM UTILITIES (Tailwind v4 @utility)
+   ============================================ */
+
+/* Z-Index utilities */
+@utility z-60 {
+  z-index: 60;
+}
+
+@utility z-70 {
+  z-index: 70;
+}
+
+/* Custom width utilities */
+@utility w-sidenav {
+  width: 280px;
+}
+
+/* Custom height utilities */
+@utility h-topbar {
+  height: 80px;
+}
+
+/* Font variation utility */
+@utility fill-1 {
+  font-variation-settings: 'FILL' 1;
+}
+
+/* ============================================
+   GLOBAL STYLES
+   ============================================ */
+body * {
+  font-family: var(--font-family-sans);
+}
+
+.shadow {
+  box-shadow: 0px 10px 12px -3px rgba(0, 0, 0, 0.1),
+              0px 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* ============================================
+   NAVIGATION LINK STATES
+   ============================================ */
+.nav-link:hover * {
+  color: #1168e2 !important;
+}
+
+.link * {
+  color: #2d7ae3 !important;
+}
+
+.link:hover * {
+  color: #19509d !important;
+}
+
+/* ============================================
+   RESPONSIVE TYPOGRAPHY
+   ============================================ */
+@media (min-width: 1024px) {
+  .lg\:text-5xl {
+    font-size: 3rem;
+    line-height: 1.3 !important;
+  }
 }
 
 .text-5xl {
-    line-height: 1.3 !important;
+  line-height: 1.3 !important;
 }
 
+/* ============================================
+   FORM INPUTS
+   ============================================ */
 .form-input {
-    color: #000000;
+  color: #000000;
 }

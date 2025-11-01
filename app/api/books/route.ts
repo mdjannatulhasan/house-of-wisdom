@@ -41,11 +41,20 @@ export async function GET(req: NextRequest) {
       },
     });
 
-    if (json === 'true') {
-      return NextResponse.json({ books }, { status: 200 });
-    }
+    // Format books for frontend
+    const formattedBooks = books.map(book => ({
+      id: book.id,
+      title: book.title,
+      cover_image: `/${book.coverImage}`,
+      author: book.author,
+      genre: book.category?.title || '',
+      publication_date: book.publicationDate.toISOString(),
+      status: 'active',
+      pdf_file: book.pdfFile ? `/${book.pdfFile}` : '',
+      type: book.type,
+    }));
 
-    return NextResponse.json({ books }, { status: 200 });
+    return NextResponse.json({ books: formattedBooks, count: formattedBooks.length }, { status: 200 });
   } catch (error: any) {
     console.error('Fetch books error:', error);
     return NextResponse.json(
@@ -69,7 +78,7 @@ export async function POST(req: NextRequest) {
     const price = formData.get('price') as string;
 
     // Validate required fields
-    if (!title || !author || !categoryId || !publicationDate || !coverImage) {
+    if (!title || !author || !publicationDate || !coverImage) {
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }
@@ -112,12 +121,26 @@ export async function POST(req: NextRequest) {
       pdfPath = await saveFile(pdfFile, 'uploads/pdf');
     }
 
+    // Resolve category id (fallback to 'General' if not provided)
+    let finalCategoryId: number | null = null;
+    if (categoryId) {
+      finalCategoryId = parseInt(categoryId);
+    } else {
+      let general = await prisma.category.findFirst({ where: { title: 'General' } });
+      if (!general) {
+        general = await prisma.category.create({
+          data: { title: 'General', slug: 'general' },
+        });
+      }
+      finalCategoryId = general.id;
+    }
+
     // Create book
     const book = await prisma.book.create({
       data: {
         title,
         author,
-        categoryId: parseInt(categoryId),
+        categoryId: finalCategoryId!,
         publicationDate: new Date(publicationDate),
         coverImage: coverPath,
         pdfFile: pdfPath,

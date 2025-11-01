@@ -1,18 +1,23 @@
-import { FormEvent } from 'react';
+'use client';
+
+import { FormEvent, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import BtnPrimary from '../common/BtnPrimary';
-import { useForm, usePage } from '@inertiajs/react';
 
 const Hero = () => {
-    const { filters }: any = usePage().props;
-    const { data, setData, get } = useForm({
-        searchTerm: filters.searchTerm || '',
-        genre: filters.genre || '',
-        year: filters.year || '',
-    });
+    const router = useRouter();
+    const searchParams = useSearchParams();
+    const [searchTerm, setSearchTerm] = useState(searchParams.get('searchTerm') || '');
+    const [genre, setGenre] = useState(searchParams.get('genre') || '');
+    const [year, setYear] = useState(searchParams.get('year') || '');
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        get('/books'); // Sends a GET request with form data as query parameters
+        const params = new URLSearchParams();
+        if (searchTerm) params.set('searchTerm', searchTerm);
+        if (genre) params.set('genre', genre);
+        if (year) params.set('year', year);
+        router.push(`/books?${params.toString()}`);
     };
 
     return (
@@ -37,30 +42,24 @@ const Hero = () => {
                                 name="searchTerm"
                                 placeholder="Please enter title, author or genre"
                                 className="border border-blue-600 px-3 py-2 w-full max-w-[450px] rounded-md"
-                                value={data.searchTerm}
-                                onChange={(e) =>
-                                    setData('searchTerm', e.target.value)
-                                }
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
                             />
                             <input
                                 type="number"
                                 name="year"
                                 placeholder="Publication Year"
                                 className="border border-blue-600 pl-3 pr-1 py-2 w-full max-w-[150px] rounded-md"
-                                value={data.year}
-                                onChange={(e) =>
-                                    setData('year', e.target.value)
-                                }
+                                value={year}
+                                onChange={(e) => setYear(e.target.value)}
                             />
                             <input
                                 type="text"
                                 name="genre"
                                 placeholder="Genre"
                                 className="border border-blue-600 px-3 py-2 w-full max-w-[150px] rounded-md"
-                                value={data.genre}
-                                onChange={(e) =>
-                                    setData('genre', e.target.value)
-                                }
+                                value={genre}
+                                onChange={(e) => setGenre(e.target.value)}
                             />
                         </div>
                         <div className="w-full flex justify-center">

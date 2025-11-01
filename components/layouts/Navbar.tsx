@@ -17,7 +17,7 @@ import {
     SheetTrigger,
 } from '@/components/ui/sheet';
 import NavLink from '@/components/common/NavLink';
-import TopbarLogo from '@/assets/TopbarLogo';
+import TopbarLogo from '@/public/assets/TopbarLogo';
 import { signOut, useSession } from 'next-auth/react';
 
 const Navbar = () => {
@@ -69,7 +69,7 @@ const Navbar = () => {
                                             <LucideAlignRight />
                                         </Button>
                                     </SheetTrigger>
-                                    <SheetContent className="bg-red-500">
+                                    <SheetContent>
                                         <SheetHeader>
                                             <SheetTitle className="lg:text-2xl text-xl">
                                                 Bookish Pathways
